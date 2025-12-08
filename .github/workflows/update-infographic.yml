@@ -1,0 +1,39 @@
+name: Atualizar Infográfico GitHub
+
+on:
+  schedule:
+    # Executa toda segunda-feira às 8h UTC (5h BRT)
+    - cron: '0 8 * * 1'
+  workflow_dispatch: # Permite execução manual
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repositório
+        uses: actions/checkout@v4
+        
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          
+      - name: Executar script
+        run: node script.js
+        
+      - name: Verificar mudanças
+        id: verify_changes
+        run: |
+          git diff --quiet infografico_github_dinamico.html || echo "changed=true" >> $GITHUB_OUTPUT
+          
+      - name: Commit e push das mudanças
+        if: steps.verify_changes.outputs.changed == 'true'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add infografico_github_dinamico.html
+          git commit -m "🔄 Atualização automática do infográfico - $(date +'%d/%m/%Y %H:%M')"
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
