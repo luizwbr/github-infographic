@@ -16,14 +16,21 @@ O infográfico possui 4 abas:
 O infográfico é atualizado automaticamente **toda segunda-feira às 8h UTC** (5h BRT) via GitHub Actions.
 
 O workflow:
-- Executa o script `script.js` que busca dados da API do GitHub
-- Gera o arquivo HTML atualizado
-- Faz commit e push automático das mudanças
+- ✅ Executa o script `script.js` que busca dados da API do GitHub
+- ✅ Gera o arquivo HTML atualizado
+- ✅ **Publica diretamente no GitHub Pages** (sem fazer commits no repositório)
+
+**Vantagens:**
+- Repositório limpo, sem commits automáticos
+- Deploy automático no GitHub Pages
+- Histórico de deploys rastreável
 
 Você também pode executar manualmente:
 1. Vá em **Actions** no GitHub
 2. Selecione "Atualizar Infográfico GitHub"
 3. Clique em **Run workflow**
+
+📍 **Acesse o infográfico em:** `https://seu-usuario.github.io/github-infographic/`
 
 ## 🚀 Executar Localmente
 

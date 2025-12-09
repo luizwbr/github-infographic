@@ -24,42 +24,54 @@ git branch -M main
 git push -u origin main
 ```
 
-### 3. Ativar GitHub Actions
 
-As Actions já estão configuradas! Após o push:
+### 3. Configurar GitHub Pages
 
-1. Vá em **Settings** → **Actions** → **General**
-2. Em "Workflow permissions", selecione:
-   - ✅ **Read and write permissions**
-3. Salve as alterações
-
-### 4. Configurar GitHub Pages (Opcional)
-
-Para visualizar o HTML online:
+⚠️ **IMPORTANTE**: Configure o GitHub Pages ANTES de executar o workflow!
 
 1. Vá em **Settings** → **Pages**
-2. Em "Source", selecione **Deploy from a branch**
-3. Branch: **main**, Folder: **/ (root)**
-4. Clique em **Save**
+2. Em "Source", selecione **GitHub Actions**
+3. Salve as alterações
 
-Após alguns minutos, seu infográfico estará disponível em:
-```
-https://SEU_USERNAME.github.io/github-infographic/infografico_github_dinamico.html
-```
+### 4. Executar o Workflow
 
-## 🔄 Execução Manual
-
-Para executar o workflow manualmente antes da próxima segunda-feira:
+Agora execute o workflow pela primeira vez:
 
 1. Vá em **Actions**
 2. Selecione "Atualizar Infográfico GitHub"
 3. Clique em **Run workflow** → **Run workflow**
+
+Após alguns minutos, seu infográfico estará disponível em:
+```
+https://SEU_USERNAME.github.io/github-infographic/
+```
+
+O arquivo será acessível diretamente na raiz (index.html)
+
+## 🔄 Como Funciona
+
+O workflow do GitHub Actions:
+1. ✅ Executa o script Node.js para buscar dados do GitHub
+2. ✅ Gera o arquivo HTML atualizado
+3. ✅ Cria uma cópia como `index.html`
+4. ✅ **Publica diretamente no GitHub Pages** (sem commit no repositório)
+
+**Vantagens:**
+- ✨ Repositório limpo, sem commits automáticos
+- 🚀 Deploy direto no GitHub Pages
+- 📊 Histórico de deploys em Actions
 
 ## ⏰ Agendamento
 
 O workflow está configurado para rodar:
 - **Automaticamente**: Toda segunda-feira às 8h UTC (5h BRT)
 - **Manualmente**: Quando você quiser via interface do GitHub
+
+### Execução Manual
+
+1. Vá em **Actions**
+2. Selecione "Atualizar Infográfico GitHub"
+3. Clique em **Run workflow** → **Run workflow**
 
 ## 🔧 Ajustar Frequência
 
