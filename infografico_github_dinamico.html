@@ -3,909 +3,793 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🔥 Repositórios GitHub — Trending & Brasil</title>
-    <style>
-        :root {
-            --primary-color: #2c3e50;
-            --secondary-color: #3498db;
-            --star-color: #f1c40f;
-            --text-color: #ecf0f1;
-            --light-text: #bdc3c7;
-            --background-dark: #34495e;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--background-dark);
-            color: var(--text-color);
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-        }
-
-        .infographic-container {
-            width: 100%;
-            max-width: 650px;
-            background-color: var(--primary-color);
-            border-radius: 12px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
-            padding: 30px;
-        }
-
-        .header {
-            text-align: center;
-            border-bottom: 3px solid var(--secondary-color);
-            padding-bottom: 15px;
-            margin-bottom: 25px;
-        }
-
-        .header h1 {
-            color: var(--text-color);
-            font-size: 1.8em;
-            margin: 0;
-        }
-
-        .header p {
-            color: var(--light-text);
-            font-size: 0.9em;
-            margin-top: 5px;
-        }
-
-        .repo-item {
-            background-color: var(--background-dark);
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 15px;
-            transition: transform 0.2s, box-shadow 0.2s;
-            border-left: 5px solid var(--secondary-color);
-        }
-        
-        .repo-item:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
-        }
-
-        .repo-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 8px;
-        }
-
-        .repo-icon {
-            font-size: 1.5em;
-            margin-right: 10px;
-        }
-
-        .repo-name {
-            font-weight: bold;
-            font-size: 1.1em;
-            color: var(--secondary-color);
-            text-decoration: none;
-        }
-
-        .repo-name:hover {
-            text-decoration: underline;
-        }
-
-        .repo-stars strong {
-            color: var(--star-color);
-            font-size: 1.1em;
-        }
-
-        .repo-description {
-            font-size: 0.9em;
-            color: var(--light-text);
-            margin-top: 5px;
-        }
-
-        .footer {
-            text-align: center;
-            padding-top: 20px;
-            font-size: 0.8em;
-            color: var(--light-text);
-        }
-
-        .update-info {
-            text-align: center;
-            color: var(--star-color);
-            font-size: 0.85em;
-            margin-bottom: 15px;
-        }
-
-        .tabs {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-            border-bottom: 2px solid var(--background-dark);
-        }
-
-        .tab {
-            padding: 12px 24px;
-            background: transparent;
-            border: none;
-            color: var(--light-text);
-            cursor: pointer;
-            font-size: 1em;
-            font-weight: 500;
-            border-bottom: 3px solid transparent;
-            transition: all 0.3s;
-        }
-
-        .tab:hover {
-            color: var(--text-color);
-        }
-
-        .tab.active {
-            color: var(--secondary-color);
-            border-bottom-color: var(--secondary-color);
-        }
-
-        .tab-content {
-            display: none;
-        }
-
-        .tab-content.active {
-            display: block;
-        }
-    </style>
+    <title>Repositórios GitHub — Trending & Brasil</title>
+    <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
     <div class="infographic-container">
         <div class="header">
-            <h1>🔥 Repositórios GitHub</h1>
+            <button class="theme-toggle" onclick="toggleTheme()" aria-label="Alternar tema">
+                <img id="theme-icon" src="https://cdn-icons-png.flaticon.com/128/3688/3688612.png" alt="Theme">
+            </button>
+            <h1>Repositórios GitHub</h1>
             <p>Os projetos open-source mais populares e inovadores.</p>
         </div>
 
         <div class="update-info">
-            ⏱️ Última atualização: 08/12/2025, 16:48:37
+            <img src="https://cdn-icons-png.flaticon.com/128/2838/2838779.png" alt="Clock" style="width: 16px; height: 16px; vertical-align: middle; margin-right: 6px;">
+            Última atualização: 10/12/2025, 16:16:40
         </div>
 
         <div class="tabs">
-            <button class="tab active" onClick="trendingTab()">📈 Em Alta</button>
-            <button class="tab" onClick="emAltaBrasilTab()">🚀 Em Alta BR</button>
-            <button class="tab" onClick="brTab()">🇧🇷 Repos Brasil</button>
-            <button class="tab" onClick="devsTab()">👥 Devs Brasil</button>
+            <button class="tab active" onClick="trendingTab()">
+                <img src="https://cdn-icons-png.flaticon.com/128/2991/2991148.png" alt="Trending" style="width: 16px; height: 16px; vertical-align: middle; margin-right: 4px;">
+                Em alta
+            </button>
+            <button class="tab" onClick="emAltaBrasilTab()">
+                <img src="https://cdn-icons-png.flaticon.com/128/3588/3588592.png" alt="Rocket" style="width: 16px; height: 16px; vertical-align: middle; margin-right: 4px;">
+                Em alta BR
+            </button>
+            <button class="tab" onClick="brTab()">
+                <img src="https://cdn-icons-png.flaticon.com/128/197/197386.png" alt="Brazil" style="width: 16px; height: 16px; vertical-align: middle; margin-right: 4px;">
+                Repos Brasil
+            </button>
+            <button class="tab" onClick="devsTab()">
+                <img src="https://cdn-icons-png.flaticon.com/128/681/681494.png" alt="Users" style="width: 16px; height: 16px; vertical-align: middle; margin-right: 4px;">
+                Devs Brasil
+            </button>
         </div>
 
         <div id="trending" class="tab-content active">
-            <h3 style="color: var(--secondary-color); margin-bottom: 15px;">Repositórios em Alta — Última Semana</h3>
+            <h3>
+                <img src="https://cdn-icons-png.flaticon.com/128/2991/2991148.png" alt="Trending" style="width: 24px; height: 24px; vertical-align: middle; margin-right: 8px;">
+                Repositórios em Alta — Última Semana
+            </h3>
             <div class="repo-list">
 
             <div class="repo-item">
                 <div class="repo-header">
-                    <span class="repo-icon">📦</span>
-                    <a href="https://github.com/Tongyi-MAI/Z-Image" target="_blank" class="repo-name">Tongyi-MAI/Z-Image</a>
+                    <img src="https://cdn-icons-png.flaticon.com/128/685/685388.png " alt="Repository" style="width: 20px; height: 20px; opacity: 0.8;">
+                    <a href="https://github.com/zai-org/Open-AutoGLM" target="_blank" class="repo-name">zai-org/Open-AutoGLM</a>
                 </div>
-                <div class="repo-description">Sem descrição</div>
+                <div class="repo-description">An Open Phone Agent Model & Framework. Unlocking the AI Phone for Everyone</div>
                 <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85em;">
-                    <span class="repo-stars"><strong>⭐ 5.784</strong> stars</span>
-                    <span style="color: var(--light-text);">🍴 299 forks</span>
-                    <span style="color: var(--light-text);">💻 Python</span>
-                    <span style="color: var(--light-text);">📅 26/11/2025</span>
+                    <span class="repo-stars"><strong><img src="https://cdn-icons-png.flaticon.com/128/1828/1828884.png" alt="Star" style="width: 14px; height: 14px; vertical-align: middle;"> 5.160</strong> stars</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/2874/2874791.png" alt="Fork" style="width: 14px; height: 14px; vertical-align: middle;"> 849 forks</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/1005/1005141.png" alt="Code" style="width: 14px; height: 14px; vertical-align: middle;"> Python</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/747/747310.png" alt="Calendar" style="width: 14px; height: 14px; vertical-align: middle;"> 08/12/2025</span>
                 </div>
             </div>
             <div class="repo-item">
                 <div class="repo-header">
-                    <span class="repo-icon">📦</span>
-                    <a href="https://github.com/HisMax/RedInk" target="_blank" class="repo-name">HisMax/RedInk</a>
-                </div>
-                <div class="repo-description">Sem descrição</div>
-                <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85em;">
-                    <span class="repo-stars"><strong>⭐ 3.104</strong> stars</span>
-                    <span style="color: var(--light-text);">🍴 619 forks</span>
-                    <span style="color: var(--light-text);">💻 Python</span>
-                    <span style="color: var(--light-text);">📅 25/11/2025</span>
-                </div>
-            </div>
-            <div class="repo-item">
-                <div class="repo-header">
-                    <span class="repo-icon">📦</span>
+                    <img src="https://cdn-icons-png.flaticon.com/128/685/685388.png " alt="Repository" style="width: 20px; height: 20px; opacity: 0.8;">
                     <a href="https://github.com/666OS/ClashMac" target="_blank" class="repo-name">666OS/ClashMac</a>
                 </div>
-                <div class="repo-description">Sem descrição</div>
+                <div class="repo-description">基于 Clash (mihomo) 内核的轻量级 macOS 菜单栏客户端。Lightweight macOS Clash (mihomo) menu bar client.</div>
                 <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85em;">
-                    <span class="repo-stars"><strong>⭐ 2.000</strong> stars</span>
-                    <span style="color: var(--light-text);">🍴 77 forks</span>
-                    <span style="color: var(--light-text);">💻 N/A</span>
-                    <span style="color: var(--light-text);">📅 28/11/2025</span>
+                    <span class="repo-stars"><strong><img src="https://cdn-icons-png.flaticon.com/128/1828/1828884.png" alt="Star" style="width: 14px; height: 14px; vertical-align: middle;"> 2.071</strong> stars</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/2874/2874791.png" alt="Fork" style="width: 14px; height: 14px; vertical-align: middle;"> 78 forks</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/1005/1005141.png" alt="Code" style="width: 14px; height: 14px; vertical-align: middle;"> N/A</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/747/747310.png" alt="Calendar" style="width: 14px; height: 14px; vertical-align: middle;"> 28/11/2025</span>
                 </div>
             </div>
             <div class="repo-item">
                 <div class="repo-header">
-                    <span class="repo-icon">📦</span>
+                    <img src="https://cdn-icons-png.flaticon.com/128/685/685388.png " alt="Repository" style="width: 20px; height: 20px; opacity: 0.8;">
+                    <a href="https://github.com/assetnote/react2shell-scanner" target="_blank" class="repo-name">assetnote/react2shell-scanner</a>
+                </div>
+                <div class="repo-description">High Fidelity Detection Mechanism for RSC/Next.js RCE (CVE-2025-55182 & CVE-2025-66478)</div>
+                <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85em;">
+                    <span class="repo-stars"><strong><img src="https://cdn-icons-png.flaticon.com/128/1828/1828884.png" alt="Star" style="width: 14px; height: 14px; vertical-align: middle;"> 2.012</strong> stars</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/2874/2874791.png" alt="Fork" style="width: 14px; height: 14px; vertical-align: middle;"> 195 forks</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/1005/1005141.png" alt="Code" style="width: 14px; height: 14px; vertical-align: middle;"> Python</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/747/747310.png" alt="Calendar" style="width: 14px; height: 14px; vertical-align: middle;"> 04/12/2025</span>
+                </div>
+            </div>
+            <div class="repo-item">
+                <div class="repo-header">
+                    <img src="https://cdn-icons-png.flaticon.com/128/685/685388.png " alt="Repository" style="width: 20px; height: 20px; opacity: 0.8;">
+                    <a href="https://github.com/Anionex/banana-slides" target="_blank" class="repo-name">Anionex/banana-slides</a>
+                </div>
+                <div class="repo-description">一个基于nano banana pro🍌的原生AI PPT生成应用，迈向真正的＂Vibe PPT＂; 支持上传任意模板图片；上传任意素材&智能解析；一句话/大纲/页面描述自动生成PPT；口头修改指定区域、一键导出 - An AI-native PPT generator based on nano banana pro🍌</div>
+                <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85em;">
+                    <span class="repo-stars"><strong><img src="https://cdn-icons-png.flaticon.com/128/1828/1828884.png" alt="Star" style="width: 14px; height: 14px; vertical-align: middle;"> 1.629</strong> stars</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/2874/2874791.png" alt="Fork" style="width: 14px; height: 14px; vertical-align: middle;"> 190 forks</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/1005/1005141.png" alt="Code" style="width: 14px; height: 14px; vertical-align: middle;"> Python</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/747/747310.png" alt="Calendar" style="width: 14px; height: 14px; vertical-align: middle;"> 29/11/2025</span>
+                </div>
+            </div>
+            <div class="repo-item">
+                <div class="repo-header">
+                    <img src="https://cdn-icons-png.flaticon.com/128/685/685388.png " alt="Repository" style="width: 20px; height: 20px; opacity: 0.8;">
                     <a href="https://github.com/deepseek-ai/DeepSeek-Math-V2" target="_blank" class="repo-name">deepseek-ai/DeepSeek-Math-V2</a>
                 </div>
                 <div class="repo-description">Sem descrição</div>
                 <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85em;">
-                    <span class="repo-stars"><strong>⭐ 1.434</strong> stars</span>
-                    <span style="color: var(--light-text);">🍴 106 forks</span>
-                    <span style="color: var(--light-text);">💻 Python</span>
-                    <span style="color: var(--light-text);">📅 27/11/2025</span>
+                    <span class="repo-stars"><strong><img src="https://cdn-icons-png.flaticon.com/128/1828/1828884.png" alt="Star" style="width: 14px; height: 14px; vertical-align: middle;"> 1.452</strong> stars</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/2874/2874791.png" alt="Fork" style="width: 14px; height: 14px; vertical-align: middle;"> 109 forks</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/1005/1005141.png" alt="Code" style="width: 14px; height: 14px; vertical-align: middle;"> Python</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/747/747310.png" alt="Calendar" style="width: 14px; height: 14px; vertical-align: middle;"> 27/11/2025</span>
                 </div>
             </div>
             <div class="repo-item">
                 <div class="repo-header">
-                    <span class="repo-icon">📦</span>
-                    <a href="https://github.com/assetnote/react2shell-scanner" target="_blank" class="repo-name">assetnote/react2shell-scanner</a>
-                </div>
-                <div class="repo-description">Sem descrição</div>
-                <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85em;">
-                    <span class="repo-stars"><strong>⭐ 1.416</strong> stars</span>
-                    <span style="color: var(--light-text);">🍴 142 forks</span>
-                    <span style="color: var(--light-text);">💻 Python</span>
-                    <span style="color: var(--light-text);">📅 04/12/2025</span>
-                </div>
-            </div>
-            <div class="repo-item">
-                <div class="repo-header">
-                    <span class="repo-icon">📦</span>
+                    <img src="https://cdn-icons-png.flaticon.com/128/685/685388.png " alt="Repository" style="width: 20px; height: 20px; opacity: 0.8;">
                     <a href="https://github.com/Rohithgilla12/data-peek" target="_blank" class="repo-name">Rohithgilla12/data-peek</a>
                 </div>
-                <div class="repo-description">Sem descrição</div>
+                <div class="repo-description">A minimal, fast, database client desktop application. Built for developers who want to quickly peek at their data without the bloat.</div>
                 <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85em;">
-                    <span class="repo-stars"><strong>⭐ 1.286</strong> stars</span>
-                    <span style="color: var(--light-text);">🍴 68 forks</span>
-                    <span style="color: var(--light-text);">💻 TypeScript</span>
-                    <span style="color: var(--light-text);">📅 28/11/2025</span>
+                    <span class="repo-stars"><strong><img src="https://cdn-icons-png.flaticon.com/128/1828/1828884.png" alt="Star" style="width: 14px; height: 14px; vertical-align: middle;"> 1.320</strong> stars</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/2874/2874791.png" alt="Fork" style="width: 14px; height: 14px; vertical-align: middle;"> 68 forks</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/1005/1005141.png" alt="Code" style="width: 14px; height: 14px; vertical-align: middle;"> TypeScript</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/747/747310.png" alt="Calendar" style="width: 14px; height: 14px; vertical-align: middle;"> 28/11/2025</span>
                 </div>
             </div>
             <div class="repo-item">
                 <div class="repo-header">
-                    <span class="repo-icon">📦</span>
+                    <img src="https://cdn-icons-png.flaticon.com/128/685/685388.png " alt="Repository" style="width: 20px; height: 20px; opacity: 0.8;">
                     <a href="https://github.com/stepfun-ai/gelab-zero" target="_blank" class="repo-name">stepfun-ai/gelab-zero</a>
                 </div>
-                <div class="repo-description">Sem descrição</div>
+                <div class="repo-description">GELab: GUI Exploration Lab. One of the best GUI agent solutions in the galaxy, built by the StepFun-GELab team and powered by Step’s research capabilities.</div>
                 <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85em;">
-                    <span class="repo-stars"><strong>⭐ 1.086</strong> stars</span>
-                    <span style="color: var(--light-text);">🍴 90 forks</span>
-                    <span style="color: var(--light-text);">💻 Python</span>
-                    <span style="color: var(--light-text);">📅 28/11/2025</span>
+                    <span class="repo-stars"><strong><img src="https://cdn-icons-png.flaticon.com/128/1828/1828884.png" alt="Star" style="width: 14px; height: 14px; vertical-align: middle;"> 1.168</strong> stars</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/2874/2874791.png" alt="Fork" style="width: 14px; height: 14px; vertical-align: middle;"> 100 forks</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/1005/1005141.png" alt="Code" style="width: 14px; height: 14px; vertical-align: middle;"> Python</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/747/747310.png" alt="Calendar" style="width: 14px; height: 14px; vertical-align: middle;"> 28/11/2025</span>
                 </div>
             </div>
             <div class="repo-item">
                 <div class="repo-header">
-                    <span class="repo-icon">📦</span>
-                    <a href="https://github.com/Gururagavendra/gmail-cleaner" target="_blank" class="repo-name">Gururagavendra/gmail-cleaner</a>
-                </div>
-                <div class="repo-description">Sem descrição</div>
-                <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85em;">
-                    <span class="repo-stars"><strong>⭐ 1.025</strong> stars</span>
-                    <span style="color: var(--light-text);">🍴 53 forks</span>
-                    <span style="color: var(--light-text);">💻 Python</span>
-                    <span style="color: var(--light-text);">📅 29/11/2025</span>
-                </div>
-            </div>
-            <div class="repo-item">
-                <div class="repo-header">
-                    <span class="repo-icon">📦</span>
-                    <a href="https://github.com/nextlevelbuilder/ui-ux-pro-max-skill" target="_blank" class="repo-name">nextlevelbuilder/ui-ux-pro-max-skill</a>
-                </div>
-                <div class="repo-description">Sem descrição</div>
-                <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85em;">
-                    <span class="repo-stars"><strong>⭐ 815</strong> stars</span>
-                    <span style="color: var(--light-text);">🍴 263 forks</span>
-                    <span style="color: var(--light-text);">💻 Python</span>
-                    <span style="color: var(--light-text);">📅 30/11/2025</span>
-                </div>
-            </div>
-            <div class="repo-item">
-                <div class="repo-header">
-                    <span class="repo-icon">📦</span>
-                    <a href="https://github.com/antonmedv/gitmal" target="_blank" class="repo-name">antonmedv/gitmal</a>
-                </div>
-                <div class="repo-description">Sem descrição</div>
-                <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85em;">
-                    <span class="repo-stars"><strong>⭐ 798</strong> stars</span>
-                    <span style="color: var(--light-text);">🍴 22 forks</span>
-                    <span style="color: var(--light-text);">💻 Go</span>
-                    <span style="color: var(--light-text);">📅 30/11/2025</span>
-                </div>
-            </div>
-            <div class="repo-item">
-                <div class="repo-header">
-                    <span class="repo-icon">📦</span>
-                    <a href="https://github.com/gavrielc/Nano-PDF" target="_blank" class="repo-name">gavrielc/Nano-PDF</a>
-                </div>
-                <div class="repo-description">Sem descrição</div>
-                <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85em;">
-                    <span class="repo-stars"><strong>⭐ 787</strong> stars</span>
-                    <span style="color: var(--light-text);">🍴 47 forks</span>
-                    <span style="color: var(--light-text);">💻 Python</span>
-                    <span style="color: var(--light-text);">📅 28/11/2025</span>
-                </div>
-            </div>
-            <div class="repo-item">
-                <div class="repo-header">
-                    <span class="repo-icon">📦</span>
-                    <a href="https://github.com/Anionex/banana-slides" target="_blank" class="repo-name">Anionex/banana-slides</a>
-                </div>
-                <div class="repo-description">Sem descrição</div>
-                <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85em;">
-                    <span class="repo-stars"><strong>⭐ 731</strong> stars</span>
-                    <span style="color: var(--light-text);">🍴 111 forks</span>
-                    <span style="color: var(--light-text);">💻 Python</span>
-                    <span style="color: var(--light-text);">📅 29/11/2025</span>
-                </div>
-            </div>
-            <div class="repo-item">
-                <div class="repo-header">
-                    <span class="repo-icon">📦</span>
-                    <a href="https://github.com/ejpir/CVE-2025-55182-research" target="_blank" class="repo-name">ejpir/CVE-2025-55182-research</a>
-                </div>
-                <div class="repo-description">Sem descrição</div>
-                <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85em;">
-                    <span class="repo-stars"><strong>⭐ 721</strong> stars</span>
-                    <span style="color: var(--light-text);">🍴 198 forks</span>
-                    <span style="color: var(--light-text);">💻 JavaScript</span>
-                    <span style="color: var(--light-text);">📅 03/12/2025</span>
-                </div>
-            </div>
-            <div class="repo-item">
-                <div class="repo-header">
-                    <span class="repo-icon">📦</span>
+                    <img src="https://cdn-icons-png.flaticon.com/128/685/685388.png " alt="Repository" style="width: 20px; height: 20px; opacity: 0.8;">
                     <a href="https://github.com/msanft/CVE-2025-55182" target="_blank" class="repo-name">msanft/CVE-2025-55182</a>
                 </div>
-                <div class="repo-description">Sem descrição</div>
+                <div class="repo-description">Explanation and full RCE PoC for CVE-2025-55182</div>
                 <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85em;">
-                    <span class="repo-stars"><strong>⭐ 710</strong> stars</span>
-                    <span style="color: var(--light-text);">🍴 116 forks</span>
-                    <span style="color: var(--light-text);">💻 Python</span>
-                    <span style="color: var(--light-text);">📅 04/12/2025</span>
+                    <span class="repo-stars"><strong><img src="https://cdn-icons-png.flaticon.com/128/1828/1828884.png" alt="Star" style="width: 14px; height: 14px; vertical-align: middle;"> 1.089</strong> stars</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/2874/2874791.png" alt="Fork" style="width: 14px; height: 14px; vertical-align: middle;"> 162 forks</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/1005/1005141.png" alt="Code" style="width: 14px; height: 14px; vertical-align: middle;"> Python</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/747/747310.png" alt="Calendar" style="width: 14px; height: 14px; vertical-align: middle;"> 04/12/2025</span>
                 </div>
             </div>
             <div class="repo-item">
                 <div class="repo-header">
-                    <span class="repo-icon">📦</span>
+                    <img src="https://cdn-icons-png.flaticon.com/128/685/685388.png " alt="Repository" style="width: 20px; height: 20px; opacity: 0.8;">
+                    <a href="https://github.com/Gururagavendra/gmail-cleaner" target="_blank" class="repo-name">Gururagavendra/gmail-cleaner</a>
+                </div>
+                <div class="repo-description">web based GUI to cleanup gmail delete, mark as read, unsubsribe from uncessary things u dont like</div>
+                <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85em;">
+                    <span class="repo-stars"><strong><img src="https://cdn-icons-png.flaticon.com/128/1828/1828884.png" alt="Star" style="width: 14px; height: 14px; vertical-align: middle;"> 1.079</strong> stars</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/2874/2874791.png" alt="Fork" style="width: 14px; height: 14px; vertical-align: middle;"> 56 forks</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/1005/1005141.png" alt="Code" style="width: 14px; height: 14px; vertical-align: middle;"> Python</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/747/747310.png" alt="Calendar" style="width: 14px; height: 14px; vertical-align: middle;"> 29/11/2025</span>
+                </div>
+            </div>
+            <div class="repo-item">
+                <div class="repo-header">
+                    <img src="https://cdn-icons-png.flaticon.com/128/685/685388.png " alt="Repository" style="width: 20px; height: 20px; opacity: 0.8;">
+                    <a href="https://github.com/HKUDS/Paper2Slides" target="_blank" class="repo-name">HKUDS/Paper2Slides</a>
+                </div>
+                <div class="repo-description">"Paper2Slides: From Paper to Presentation in One Click"</div>
+                <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85em;">
+                    <span class="repo-stars"><strong><img src="https://cdn-icons-png.flaticon.com/128/1828/1828884.png" alt="Star" style="width: 14px; height: 14px; vertical-align: middle;"> 1.070</strong> stars</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/2874/2874791.png" alt="Fork" style="width: 14px; height: 14px; vertical-align: middle;"> 138 forks</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/1005/1005141.png" alt="Code" style="width: 14px; height: 14px; vertical-align: middle;"> Python</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/747/747310.png" alt="Calendar" style="width: 14px; height: 14px; vertical-align: middle;"> 07/12/2025</span>
+                </div>
+            </div>
+            <div class="repo-item">
+                <div class="repo-header">
+                    <img src="https://cdn-icons-png.flaticon.com/128/685/685388.png " alt="Repository" style="width: 20px; height: 20px; opacity: 0.8;">
+                    <a href="https://github.com/antonmedv/gitmal" target="_blank" class="repo-name">antonmedv/gitmal</a>
+                </div>
+                <div class="repo-description">A static page generator for repos</div>
+                <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85em;">
+                    <span class="repo-stars"><strong><img src="https://cdn-icons-png.flaticon.com/128/1828/1828884.png" alt="Star" style="width: 14px; height: 14px; vertical-align: middle;"> 916</strong> stars</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/2874/2874791.png" alt="Fork" style="width: 14px; height: 14px; vertical-align: middle;"> 31 forks</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/1005/1005141.png" alt="Code" style="width: 14px; height: 14px; vertical-align: middle;"> Go</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/747/747310.png" alt="Calendar" style="width: 14px; height: 14px; vertical-align: middle;"> 30/11/2025</span>
+                </div>
+            </div>
+            <div class="repo-item">
+                <div class="repo-header">
+                    <img src="https://cdn-icons-png.flaticon.com/128/685/685388.png " alt="Repository" style="width: 20px; height: 20px; opacity: 0.8;">
+                    <a href="https://github.com/nextlevelbuilder/ui-ux-pro-max-skill" target="_blank" class="repo-name">nextlevelbuilder/ui-ux-pro-max-skill</a>
+                </div>
+                <div class="repo-description">An AI SKILL that provide design intelligence for building professional UI/UX multiple platforms</div>
+                <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85em;">
+                    <span class="repo-stars"><strong><img src="https://cdn-icons-png.flaticon.com/128/1828/1828884.png" alt="Star" style="width: 14px; height: 14px; vertical-align: middle;"> 869</strong> stars</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/2874/2874791.png" alt="Fork" style="width: 14px; height: 14px; vertical-align: middle;"> 275 forks</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/1005/1005141.png" alt="Code" style="width: 14px; height: 14px; vertical-align: middle;"> Python</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/747/747310.png" alt="Calendar" style="width: 14px; height: 14px; vertical-align: middle;"> 30/11/2025</span>
+                </div>
+            </div>
+            <div class="repo-item">
+                <div class="repo-header">
+                    <img src="https://cdn-icons-png.flaticon.com/128/685/685388.png " alt="Repository" style="width: 20px; height: 20px; opacity: 0.8;">
+                    <a href="https://github.com/gavrielc/Nano-PDF" target="_blank" class="repo-name">gavrielc/Nano-PDF</a>
+                </div>
+                <div class="repo-description">Edit PDF files with Nano Banana</div>
+                <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85em;">
+                    <span class="repo-stars"><strong><img src="https://cdn-icons-png.flaticon.com/128/1828/1828884.png" alt="Star" style="width: 14px; height: 14px; vertical-align: middle;"> 831</strong> stars</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/2874/2874791.png" alt="Fork" style="width: 14px; height: 14px; vertical-align: middle;"> 50 forks</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/1005/1005141.png" alt="Code" style="width: 14px; height: 14px; vertical-align: middle;"> Python</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/747/747310.png" alt="Calendar" style="width: 14px; height: 14px; vertical-align: middle;"> 28/11/2025</span>
+                </div>
+            </div>
+            <div class="repo-item">
+                <div class="repo-header">
+                    <img src="https://cdn-icons-png.flaticon.com/128/685/685388.png " alt="Repository" style="width: 20px; height: 20px; opacity: 0.8;">
+                    <a href="https://github.com/Alibaba-Quark/LiveAvatar" target="_blank" class="repo-name">Alibaba-Quark/LiveAvatar</a>
+                </div>
+                <div class="repo-description">Implementation of "Live Avatar: Streaming Real-time Audio-Driven Avatar Generation with Infinite Length"</div>
+                <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85em;">
+                    <span class="repo-stars"><strong><img src="https://cdn-icons-png.flaticon.com/128/1828/1828884.png" alt="Star" style="width: 14px; height: 14px; vertical-align: middle;"> 794</strong> stars</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/2874/2874791.png" alt="Fork" style="width: 14px; height: 14px; vertical-align: middle;"> 65 forks</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/1005/1005141.png" alt="Code" style="width: 14px; height: 14px; vertical-align: middle;"> Python</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/747/747310.png" alt="Calendar" style="width: 14px; height: 14px; vertical-align: middle;"> 04/12/2025</span>
+                </div>
+            </div>
+            <div class="repo-item">
+                <div class="repo-header">
+                    <img src="https://cdn-icons-png.flaticon.com/128/685/685388.png " alt="Repository" style="width: 20px; height: 20px; opacity: 0.8;">
+                    <a href="https://github.com/PastKing/tgbot-verify" target="_blank" class="repo-name">PastKing/tgbot-verify</a>
+                </div>
+                <div class="repo-description">一个基于 Python Telegram Bot 的自动化认证工具，能够自动完成 SheerID 平台的学生/教师身份验证流程。</div>
+                <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85em;">
+                    <span class="repo-stars"><strong><img src="https://cdn-icons-png.flaticon.com/128/1828/1828884.png" alt="Star" style="width: 14px; height: 14px; vertical-align: middle;"> 785</strong> stars</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/2874/2874791.png" alt="Fork" style="width: 14px; height: 14px; vertical-align: middle;"> 351 forks</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/1005/1005141.png" alt="Code" style="width: 14px; height: 14px; vertical-align: middle;"> Python</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/747/747310.png" alt="Calendar" style="width: 14px; height: 14px; vertical-align: middle;"> 07/12/2025</span>
+                </div>
+            </div>
+            <div class="repo-item">
+                <div class="repo-header">
+                    <img src="https://cdn-icons-png.flaticon.com/128/685/685388.png " alt="Repository" style="width: 20px; height: 20px; opacity: 0.8;">
                     <a href="https://github.com/lachlan2k/React2Shell-CVE-2025-55182-original-poc" target="_blank" class="repo-name">lachlan2k/React2Shell-CVE-2025-55182-original-poc</a>
                 </div>
-                <div class="repo-description">Sem descrição</div>
+                <div class="repo-description">Original Proof-of-Concepts for React2Shell CVE-2025-55182</div>
                 <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85em;">
-                    <span class="repo-stars"><strong>⭐ 608</strong> stars</span>
-                    <span style="color: var(--light-text);">🍴 47 forks</span>
-                    <span style="color: var(--light-text);">💻 JavaScript</span>
-                    <span style="color: var(--light-text);">📅 05/12/2025</span>
+                    <span class="repo-stars"><strong><img src="https://cdn-icons-png.flaticon.com/128/1828/1828884.png" alt="Star" style="width: 14px; height: 14px; vertical-align: middle;"> 763</strong> stars</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/2874/2874791.png" alt="Fork" style="width: 14px; height: 14px; vertical-align: middle;"> 64 forks</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/1005/1005141.png" alt="Code" style="width: 14px; height: 14px; vertical-align: middle;"> JavaScript</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/747/747310.png" alt="Calendar" style="width: 14px; height: 14px; vertical-align: middle;"> 05/12/2025</span>
                 </div>
             </div>
             <div class="repo-item">
                 <div class="repo-header">
-                    <span class="repo-icon">📦</span>
-                    <a href="https://github.com/CodeOne45/vex-tui" target="_blank" class="repo-name">CodeOne45/vex-tui</a>
-                </div>
-                <div class="repo-description">Sem descrição</div>
-                <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85em;">
-                    <span class="repo-stars"><strong>⭐ 585</strong> stars</span>
-                    <span style="color: var(--light-text);">🍴 25 forks</span>
-                    <span style="color: var(--light-text);">💻 Go</span>
-                    <span style="color: var(--light-text);">📅 26/11/2025</span>
-                </div>
-            </div>
-            <div class="repo-item">
-                <div class="repo-header">
-                    <span class="repo-icon">📦</span>
+                    <img src="https://cdn-icons-png.flaticon.com/128/685/685388.png " alt="Repository" style="width: 20px; height: 20px; opacity: 0.8;">
                     <a href="https://github.com/guhcostan/mac-cleaner-cli" target="_blank" class="repo-name">guhcostan/mac-cleaner-cli</a>
                 </div>
                 <div class="repo-description">Sem descrição</div>
                 <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85em;">
-                    <span class="repo-stars"><strong>⭐ 585</strong> stars</span>
-                    <span style="color: var(--light-text);">🍴 49 forks</span>
-                    <span style="color: var(--light-text);">💻 TypeScript</span>
-                    <span style="color: var(--light-text);">📅 04/12/2025</span>
+                    <span class="repo-stars"><strong><img src="https://cdn-icons-png.flaticon.com/128/1828/1828884.png" alt="Star" style="width: 14px; height: 14px; vertical-align: middle;"> 750</strong> stars</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/2874/2874791.png" alt="Fork" style="width: 14px; height: 14px; vertical-align: middle;"> 59 forks</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/1005/1005141.png" alt="Code" style="width: 14px; height: 14px; vertical-align: middle;"> TypeScript</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/747/747310.png" alt="Calendar" style="width: 14px; height: 14px; vertical-align: middle;"> 04/12/2025</span>
                 </div>
             </div>
             <div class="repo-item">
                 <div class="repo-header">
-                    <span class="repo-icon">📦</span>
-                    <a href="https://github.com/open-gigaai/giga-world-0" target="_blank" class="repo-name">open-gigaai/giga-world-0</a>
+                    <img src="https://cdn-icons-png.flaticon.com/128/685/685388.png " alt="Repository" style="width: 20px; height: 20px; opacity: 0.8;">
+                    <a href="https://github.com/ejpir/CVE-2025-55182-research" target="_blank" class="repo-name">ejpir/CVE-2025-55182-research</a>
+                </div>
+                <div class="repo-description">CVE-2025-55182 POC</div>
+                <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85em;">
+                    <span class="repo-stars"><strong><img src="https://cdn-icons-png.flaticon.com/128/1828/1828884.png" alt="Star" style="width: 14px; height: 14px; vertical-align: middle;"> 750</strong> stars</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/2874/2874791.png" alt="Fork" style="width: 14px; height: 14px; vertical-align: middle;"> 202 forks</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/1005/1005141.png" alt="Code" style="width: 14px; height: 14px; vertical-align: middle;"> JavaScript</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/747/747310.png" alt="Calendar" style="width: 14px; height: 14px; vertical-align: middle;"> 03/12/2025</span>
+                </div>
+            </div>
+            <div class="repo-item">
+                <div class="repo-header">
+                    <img src="https://cdn-icons-png.flaticon.com/128/685/685388.png " alt="Repository" style="width: 20px; height: 20px; opacity: 0.8;">
+                    <a href="https://github.com/byJoey/ech-wk" target="_blank" class="repo-name">byJoey/ech-wk</a>
                 </div>
                 <div class="repo-description">Sem descrição</div>
                 <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85em;">
-                    <span class="repo-stars"><strong>⭐ 537</strong> stars</span>
-                    <span style="color: var(--light-text);">🍴 43 forks</span>
-                    <span style="color: var(--light-text);">💻 Python</span>
-                    <span style="color: var(--light-text);">📅 25/11/2025</span>
+                    <span class="repo-stars"><strong><img src="https://cdn-icons-png.flaticon.com/128/1828/1828884.png" alt="Star" style="width: 14px; height: 14px; vertical-align: middle;"> 737</strong> stars</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/2874/2874791.png" alt="Fork" style="width: 14px; height: 14px; vertical-align: middle;"> 443 forks</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/1005/1005141.png" alt="Code" style="width: 14px; height: 14px; vertical-align: middle;"> Python</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/747/747310.png" alt="Calendar" style="width: 14px; height: 14px; vertical-align: middle;"> 06/12/2025</span>
                 </div>
             </div>
             <div class="repo-item">
                 <div class="repo-header">
-                    <span class="repo-icon">📦</span>
-                    <a href="https://github.com/Gen-Verse/LatentMAS" target="_blank" class="repo-name">Gen-Verse/LatentMAS</a>
+                    <img src="https://cdn-icons-png.flaticon.com/128/685/685388.png " alt="Repository" style="width: 20px; height: 20px; opacity: 0.8;">
+                    <a href="https://github.com/mistralai/mistral-vibe" target="_blank" class="repo-name">mistralai/mistral-vibe</a>
                 </div>
-                <div class="repo-description">Sem descrição</div>
+                <div class="repo-description">Minimal CLI coding agent by Mistral</div>
                 <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85em;">
-                    <span class="repo-stars"><strong>⭐ 529</strong> stars</span>
-                    <span style="color: var(--light-text);">🍴 84 forks</span>
-                    <span style="color: var(--light-text);">💻 Python</span>
-                    <span style="color: var(--light-text);">📅 24/11/2025</span>
+                    <span class="repo-stars"><strong><img src="https://cdn-icons-png.flaticon.com/128/1828/1828884.png" alt="Star" style="width: 14px; height: 14px; vertical-align: middle;"> 709</strong> stars</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/2874/2874791.png" alt="Fork" style="width: 14px; height: 14px; vertical-align: middle;"> 56 forks</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/1005/1005141.png" alt="Code" style="width: 14px; height: 14px; vertical-align: middle;"> Python</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/747/747310.png" alt="Calendar" style="width: 14px; height: 14px; vertical-align: middle;"> 08/12/2025</span>
                 </div>
             </div>
             <div class="repo-item">
                 <div class="repo-header">
-                    <span class="repo-icon">📦</span>
+                    <img src="https://cdn-icons-png.flaticon.com/128/685/685388.png " alt="Repository" style="width: 20px; height: 20px; opacity: 0.8;">
+                    <a href="https://github.com/cporter202/API-mega-list" target="_blank" class="repo-name">cporter202/API-mega-list</a>
+                </div>
+                <div class="repo-description">This GitHub repo is a powerhouse collection of APIs you can start using immediately to build everything from simple automations to full-scale applications. One of the most valuable API lists on GitHub—period. 💪</div>
+                <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85em;">
+                    <span class="repo-stars"><strong><img src="https://cdn-icons-png.flaticon.com/128/1828/1828884.png" alt="Star" style="width: 14px; height: 14px; vertical-align: middle;"> 673</strong> stars</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/2874/2874791.png" alt="Fork" style="width: 14px; height: 14px; vertical-align: middle;"> 149 forks</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/1005/1005141.png" alt="Code" style="width: 14px; height: 14px; vertical-align: middle;"> JavaScript</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/747/747310.png" alt="Calendar" style="width: 14px; height: 14px; vertical-align: middle;"> 09/12/2025</span>
+                </div>
+            </div>
+            <div class="repo-item">
+                <div class="repo-header">
+                    <img src="https://cdn-icons-png.flaticon.com/128/685/685388.png " alt="Repository" style="width: 20px; height: 20px; opacity: 0.8;">
+                    <a href="https://github.com/Nerds489/NETREAPER" target="_blank" class="repo-name">Nerds489/NETREAPER</a>
+                </div>
+                <div class="repo-description">Network security framework. 70+ tools. Built mean, runs clean.</div>
+                <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85em;">
+                    <span class="repo-stars"><strong><img src="https://cdn-icons-png.flaticon.com/128/1828/1828884.png" alt="Star" style="width: 14px; height: 14px; vertical-align: middle;"> 664</strong> stars</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/2874/2874791.png" alt="Fork" style="width: 14px; height: 14px; vertical-align: middle;"> 89 forks</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/1005/1005141.png" alt="Code" style="width: 14px; height: 14px; vertical-align: middle;"> Shell</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/747/747310.png" alt="Calendar" style="width: 14px; height: 14px; vertical-align: middle;"> 04/12/2025</span>
+                </div>
+            </div>
+            <div class="repo-item">
+                <div class="repo-header">
+                    <img src="https://cdn-icons-png.flaticon.com/128/685/685388.png " alt="Repository" style="width: 20px; height: 20px; opacity: 0.8;">
+                    <a href="https://github.com/TanShilongMario/PromptFill" target="_blank" class="repo-name">TanShilongMario/PromptFill</a>
+                </div>
+                <div class="repo-description">一个专为 AI 绘画（Nano Banana 等）设计的“结构化提示词生成工具”。通过可视化的“填空”交互方式，帮助用户快速构建、管理和迭代复杂的 Prompt。</div>
+                <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85em;">
+                    <span class="repo-stars"><strong><img src="https://cdn-icons-png.flaticon.com/128/1828/1828884.png" alt="Star" style="width: 14px; height: 14px; vertical-align: middle;"> 560</strong> stars</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/2874/2874791.png" alt="Fork" style="width: 14px; height: 14px; vertical-align: middle;"> 81 forks</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/1005/1005141.png" alt="Code" style="width: 14px; height: 14px; vertical-align: middle;"> JavaScript</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/747/747310.png" alt="Calendar" style="width: 14px; height: 14px; vertical-align: middle;"> 06/12/2025</span>
+                </div>
+            </div>
+            <div class="repo-item">
+                <div class="repo-header">
+                    <img src="https://cdn-icons-png.flaticon.com/128/685/685388.png " alt="Repository" style="width: 20px; height: 20px; opacity: 0.8;">
                     <a href="https://github.com/TelegramMessenger/cocoon" target="_blank" class="repo-name">TelegramMessenger/cocoon</a>
                 </div>
-                <div class="repo-description">Sem descrição</div>
+                <div class="repo-description">cocoon</div>
                 <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85em;">
-                    <span class="repo-stars"><strong>⭐ 529</strong> stars</span>
-                    <span style="color: var(--light-text);">🍴 41 forks</span>
-                    <span style="color: var(--light-text);">💻 C++</span>
-                    <span style="color: var(--light-text);">📅 29/11/2025</span>
+                    <span class="repo-stars"><strong><img src="https://cdn-icons-png.flaticon.com/128/1828/1828884.png" alt="Star" style="width: 14px; height: 14px; vertical-align: middle;"> 536</strong> stars</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/2874/2874791.png" alt="Fork" style="width: 14px; height: 14px; vertical-align: middle;"> 41 forks</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/1005/1005141.png" alt="Code" style="width: 14px; height: 14px; vertical-align: middle;"> C++</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/747/747310.png" alt="Calendar" style="width: 14px; height: 14px; vertical-align: middle;"> 29/11/2025</span>
                 </div>
             </div>
             <div class="repo-item">
                 <div class="repo-header">
-                    <span class="repo-icon">📦</span>
-                    <a href="https://github.com/Alibaba-Quark/LiveAvatar" target="_blank" class="repo-name">Alibaba-Quark/LiveAvatar</a>
-                </div>
-                <div class="repo-description">Sem descrição</div>
-                <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85em;">
-                    <span class="repo-stars"><strong>⭐ 512</strong> stars</span>
-                    <span style="color: var(--light-text);">🍴 36 forks</span>
-                    <span style="color: var(--light-text);">💻 Python</span>
-                    <span style="color: var(--light-text);">📅 04/12/2025</span>
-                </div>
-            </div>
-            <div class="repo-item">
-                <div class="repo-header">
-                    <span class="repo-icon">📦</span>
+                    <img src="https://cdn-icons-png.flaticon.com/128/685/685388.png " alt="Repository" style="width: 20px; height: 20px; opacity: 0.8;">
                     <a href="https://github.com/moleculemmeng020425/christmas-tree" target="_blank" class="repo-name">moleculemmeng020425/christmas-tree</a>
                 </div>
-                <div class="repo-description">Sem descrição</div>
+                <div class="repo-description">一棵高保真3D交互圣诞树</div>
                 <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85em;">
-                    <span class="repo-stars"><strong>⭐ 456</strong> stars</span>
-                    <span style="color: var(--light-text);">🍴 124 forks</span>
-                    <span style="color: var(--light-text);">💻 TypeScript</span>
-                    <span style="color: var(--light-text);">📅 27/11/2025</span>
-                </div>
-            </div>
-            <div class="repo-item">
-                <div class="repo-header">
-                    <span class="repo-icon">📦</span>
-                    <a href="https://github.com/soufianekhiat/ImAnim" target="_blank" class="repo-name">soufianekhiat/ImAnim</a>
-                </div>
-                <div class="repo-description">Sem descrição</div>
-                <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85em;">
-                    <span class="repo-stars"><strong>⭐ 440</strong> stars</span>
-                    <span style="color: var(--light-text);">🍴 12 forks</span>
-                    <span style="color: var(--light-text);">💻 C++</span>
-                    <span style="color: var(--light-text);">📅 27/11/2025</span>
-                </div>
-            </div>
-            <div class="repo-item">
-                <div class="repo-header">
-                    <span class="repo-icon">📦</span>
-                    <a href="https://github.com/PastKing/tgbot-verify" target="_blank" class="repo-name">PastKing/tgbot-verify</a>
-                </div>
-                <div class="repo-description">Sem descrição</div>
-                <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85em;">
-                    <span class="repo-stars"><strong>⭐ 419</strong> stars</span>
-                    <span style="color: var(--light-text);">🍴 258 forks</span>
-                    <span style="color: var(--light-text);">💻 Python</span>
-                    <span style="color: var(--light-text);">📅 07/12/2025</span>
-                </div>
-            </div>
-            <div class="repo-item">
-                <div class="repo-header">
-                    <span class="repo-icon">📦</span>
-                    <a href="https://github.com/LeslieLeung/glean" target="_blank" class="repo-name">LeslieLeung/glean</a>
-                </div>
-                <div class="repo-description">Sem descrição</div>
-                <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85em;">
-                    <span class="repo-stars"><strong>⭐ 412</strong> stars</span>
-                    <span style="color: var(--light-text);">🍴 22 forks</span>
-                    <span style="color: var(--light-text);">💻 TypeScript</span>
-                    <span style="color: var(--light-text);">📅 30/11/2025</span>
+                    <span class="repo-stars"><strong><img src="https://cdn-icons-png.flaticon.com/128/1828/1828884.png" alt="Star" style="width: 14px; height: 14px; vertical-align: middle;"> 522</strong> stars</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/2874/2874791.png" alt="Fork" style="width: 14px; height: 14px; vertical-align: middle;"> 146 forks</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/1005/1005141.png" alt="Code" style="width: 14px; height: 14px; vertical-align: middle;"> TypeScript</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/747/747310.png" alt="Calendar" style="width: 14px; height: 14px; vertical-align: middle;"> 27/11/2025</span>
                 </div>
             </div>
             </div>
         </div>
 
         <div id="emaltabrasil" class="tab-content">
-            <h3 style="color: var(--secondary-color); margin-bottom: 15px;">🚀 Repositórios em Alta no Brasil — Última Semana</h3>
+            <h3>
+                <img src="https://cdn-icons-png.flaticon.com/128/3588/3588592.png" alt="Rocket" style="width: 24px; height: 24px; vertical-align: middle; margin-right: 8px;">
+                Repositórios em Alta no Brasil — Última Semana
+            </h3>
             <div class="repo-list">
 
             <div class="repo-item">
                 <div class="repo-header">
-                    <span class="repo-icon">🚀</span>
+                    <img src="https://cdn-icons-png.flaticon.com/128/685/685388.png " alt="Repository" style="width: 20px; height: 20px; opacity: 0.8;">
                     <a href="https://github.com/llimbus/Qbx_DJ" target="_blank" class="repo-name">llimbus/Qbx_DJ</a>
                 </div>
                 <div class="repo-description"> Sistema completo de DJ para FiveM com playlists e efeitos visuais</div>
                 <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85em;">
-                    <span class="repo-stars"><strong>⭐ 2</strong> stars</span>
-                    <span style="color: var(--light-text);">🍴 1 forks</span>
-                    <span style="color: var(--light-text);">💻 Lua</span>
-                    <span style="color: var(--light-text);">📅 05/12/2025</span>
+                    <span class="repo-stars"><strong><img src="https://cdn-icons-png.flaticon.com/128/1828/1828884.png" alt="Star" style="width: 14px; height: 14px; vertical-align: middle;"> 2</strong> stars</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/2874/2874791.png" alt="Fork" style="width: 14px; height: 14px; vertical-align: middle;"> 1 forks</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/1005/1005141.png" alt="Code" style="width: 14px; height: 14px; vertical-align: middle;"> Lua</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/747/747310.png" alt="Calendar" style="width: 14px; height: 14px; vertical-align: middle;"> 05/12/2025</span>
                 </div>
             </div>
             <div class="repo-item">
                 <div class="repo-header">
-                    <span class="repo-icon">🚀</span>
-                    <a href="https://github.com/mmhqs/vacation-days" target="_blank" class="repo-name">mmhqs/vacation-days</a>
-                </div>
-                <div class="repo-description">A little helper to assist you in choosing the best time for your vacation.</div>
-                <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85em;">
-                    <span class="repo-stars"><strong>⭐ 0</strong> stars</span>
-                    <span style="color: var(--light-text);">🍴 0 forks</span>
-                    <span style="color: var(--light-text);">💻 TypeScript</span>
-                    <span style="color: var(--light-text);">📅 26/11/2025</span>
-                </div>
-            </div>
-            <div class="repo-item">
-                <div class="repo-header">
-                    <span class="repo-icon">🚀</span>
+                    <img src="https://cdn-icons-png.flaticon.com/128/685/685388.png " alt="Repository" style="width: 20px; height: 20px; opacity: 0.8;">
                     <a href="https://github.com/onreen/mercadolivre-scraper-brasil-portugu-s" target="_blank" class="repo-name">onreen/mercadolivre-scraper-brasil-portugu-s</a>
                 </div>
                 <div class="repo-description">mercadolivre data extraction tool</div>
                 <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85em;">
-                    <span class="repo-stars"><strong>⭐ 0</strong> stars</span>
-                    <span style="color: var(--light-text);">🍴 0 forks</span>
-                    <span style="color: var(--light-text);">💻 N/A</span>
-                    <span style="color: var(--light-text);">📅 07/12/2025</span>
+                    <span class="repo-stars"><strong><img src="https://cdn-icons-png.flaticon.com/128/1828/1828884.png" alt="Star" style="width: 14px; height: 14px; vertical-align: middle;"> 0</strong> stars</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/2874/2874791.png" alt="Fork" style="width: 14px; height: 14px; vertical-align: middle;"> 0 forks</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/1005/1005141.png" alt="Code" style="width: 14px; height: 14px; vertical-align: middle;"> N/A</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/747/747310.png" alt="Calendar" style="width: 14px; height: 14px; vertical-align: middle;"> 07/12/2025</span>
                 </div>
             </div>
             <div class="repo-item">
                 <div class="repo-header">
-                    <span class="repo-icon">🚀</span>
+                    <img src="https://cdn-icons-png.flaticon.com/128/685/685388.png " alt="Repository" style="width: 20px; height: 20px; opacity: 0.8;">
                     <a href="https://github.com/13alves05/tocadiscos-editora" target="_blank" class="repo-name">13alves05/tocadiscos-editora</a>
                 </div>
                 <div class="repo-description">Gestão de autores e álbuns da Editora Tocadiscos – Trabalho Prático Algoritmos e Programação 2025/2026</div>
                 <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85em;">
-                    <span class="repo-stars"><strong>⭐ 0</strong> stars</span>
-                    <span style="color: var(--light-text);">🍴 0 forks</span>
-                    <span style="color: var(--light-text);">💻 N/A</span>
-                    <span style="color: var(--light-text);">📅 01/12/2025</span>
+                    <span class="repo-stars"><strong><img src="https://cdn-icons-png.flaticon.com/128/1828/1828884.png" alt="Star" style="width: 14px; height: 14px; vertical-align: middle;"> 0</strong> stars</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/2874/2874791.png" alt="Fork" style="width: 14px; height: 14px; vertical-align: middle;"> 0 forks</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/1005/1005141.png" alt="Code" style="width: 14px; height: 14px; vertical-align: middle;"> N/A</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/747/747310.png" alt="Calendar" style="width: 14px; height: 14px; vertical-align: middle;"> 01/12/2025</span>
                 </div>
             </div>
             <div class="repo-item">
                 <div class="repo-header">
-                    <span class="repo-icon">🚀</span>
+                    <img src="https://cdn-icons-png.flaticon.com/128/685/685388.png " alt="Repository" style="width: 20px; height: 20px; opacity: 0.8;">
+                    <a href="https://github.com/gustavofreze/capital-gains" target="_blank" class="repo-name">gustavofreze/capital-gains</a>
+                </div>
+                <div class="repo-description">Command-line (CLI) application that calculates the tax owed on profits or losses from stock market transactions.</div>
+                <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85em;">
+                    <span class="repo-stars"><strong><img src="https://cdn-icons-png.flaticon.com/128/1828/1828884.png" alt="Star" style="width: 14px; height: 14px; vertical-align: middle;"> 0</strong> stars</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/2874/2874791.png" alt="Fork" style="width: 14px; height: 14px; vertical-align: middle;"> 0 forks</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/1005/1005141.png" alt="Code" style="width: 14px; height: 14px; vertical-align: middle;"> N/A</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/747/747310.png" alt="Calendar" style="width: 14px; height: 14px; vertical-align: middle;"> 10/12/2025</span>
+                </div>
+            </div>
+            <div class="repo-item">
+                <div class="repo-header">
+                    <img src="https://cdn-icons-png.flaticon.com/128/685/685388.png " alt="Repository" style="width: 20px; height: 20px; opacity: 0.8;">
                     <a href="https://github.com/Op1rus/busca-cep-e-corretores" target="_blank" class="repo-name">Op1rus/busca-cep-e-corretores</a>
                 </div>
                 <div class="repo-description">📍 Discover and integrate BrazilAPI features for searching postal codes and accessing a broker catalog with interactive maps using Node-RED.</div>
                 <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85em;">
-                    <span class="repo-stars"><strong>⭐ 0</strong> stars</span>
-                    <span style="color: var(--light-text);">🍴 0 forks</span>
-                    <span style="color: var(--light-text);">💻 N/A</span>
-                    <span style="color: var(--light-text);">📅 03/12/2025</span>
+                    <span class="repo-stars"><strong><img src="https://cdn-icons-png.flaticon.com/128/1828/1828884.png" alt="Star" style="width: 14px; height: 14px; vertical-align: middle;"> 0</strong> stars</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/2874/2874791.png" alt="Fork" style="width: 14px; height: 14px; vertical-align: middle;"> 0 forks</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/1005/1005141.png" alt="Code" style="width: 14px; height: 14px; vertical-align: middle;"> N/A</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/747/747310.png" alt="Calendar" style="width: 14px; height: 14px; vertical-align: middle;"> 03/12/2025</span>
                 </div>
             </div>
             </div>
         </div>
 
         <div id="brasil" class="tab-content">
-            <h3 style="color: var(--secondary-color); margin-bottom: 15px;">Top Repositórios de Desenvolvedores Brasileiros</h3>
+            <h3>
+                <img src="https://cdn-icons-png.flaticon.com/128/197/197386.png" alt="Brazil" style="width: 24px; height: 24px; vertical-align: middle; margin-right: 8px;">
+                Top Repositórios de Desenvolvedores Brasileiros
+            </h3>
             <div class="repo-list">
 
             <div class="repo-item">
                 <div class="repo-header">
-                    <span class="repo-icon">🇧🇷</span>
+                    <img src="https://cdn-icons-png.flaticon.com/128/685/685388.png " alt="Repository" style="width: 20px; height: 20px; opacity: 0.8;">
                     <a href="https://github.com/cuducos/minha-receita" target="_blank" class="repo-name">cuducos/minha-receita</a>
                 </div>
                 <div class="repo-description">🏢 Sua API web para consulta de informações do CNPJ da Receita Federal</div>
                 <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85em;">
-                    <span class="repo-stars"><strong>⭐ 1.543</strong> stars</span>
-                    <span style="color: var(--light-text);">🍴 160 forks</span>
-                    <span style="color: var(--light-text);">💻 Go</span>
-                    <span style="color: var(--light-text);">📅 29/06/2019</span>
+                    <span class="repo-stars"><strong><img src="https://cdn-icons-png.flaticon.com/128/1828/1828884.png" alt="Star" style="width: 14px; height: 14px; vertical-align: middle;"> 1.544</strong> stars</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/2874/2874791.png" alt="Fork" style="width: 14px; height: 14px; vertical-align: middle;"> 160 forks</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/1005/1005141.png" alt="Code" style="width: 14px; height: 14px; vertical-align: middle;"> Go</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/747/747310.png" alt="Calendar" style="width: 14px; height: 14px; vertical-align: middle;"> 29/06/2019</span>
                 </div>
             </div>
             <div class="repo-item">
                 <div class="repo-header">
-                    <span class="repo-icon">🇧🇷</span>
+                    <img src="https://cdn-icons-png.flaticon.com/128/685/685388.png " alt="Repository" style="width: 20px; height: 20px; opacity: 0.8;">
                     <a href="https://github.com/react-brasil/empresas-que-usam-react-no-brasil" target="_blank" class="repo-name">react-brasil/empresas-que-usam-react-no-brasil</a>
                 </div>
                 <div class="repo-description">Repositório que mostra empresas e projetos que utilizam React no Brasil</div>
                 <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85em;">
-                    <span class="repo-stars"><strong>⭐ 1.335</strong> stars</span>
-                    <span style="color: var(--light-text);">🍴 315 forks</span>
-                    <span style="color: var(--light-text);">💻 N/A</span>
-                    <span style="color: var(--light-text);">📅 21/09/2017</span>
+                    <span class="repo-stars"><strong><img src="https://cdn-icons-png.flaticon.com/128/1828/1828884.png" alt="Star" style="width: 14px; height: 14px; vertical-align: middle;"> 1.335</strong> stars</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/2874/2874791.png" alt="Fork" style="width: 14px; height: 14px; vertical-align: middle;"> 315 forks</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/1005/1005141.png" alt="Code" style="width: 14px; height: 14px; vertical-align: middle;"> N/A</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/747/747310.png" alt="Calendar" style="width: 14px; height: 14px; vertical-align: middle;"> 21/09/2017</span>
                 </div>
             </div>
             <div class="repo-item">
                 <div class="repo-header">
-                    <span class="repo-icon">🇧🇷</span>
+                    <img src="https://cdn-icons-png.flaticon.com/128/685/685388.png " alt="Repository" style="width: 20px; height: 20px; opacity: 0.8;">
                     <a href="https://github.com/dunossauro/live-de-python" target="_blank" class="repo-name">dunossauro/live-de-python</a>
                 </div>
                 <div class="repo-description">Repositório das lives de python semanais</div>
                 <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85em;">
-                    <span class="repo-stars"><strong>⭐ 1.268</strong> stars</span>
-                    <span style="color: var(--light-text);">🍴 217 forks</span>
-                    <span style="color: var(--light-text);">💻 Python</span>
-                    <span style="color: var(--light-text);">📅 26/04/2017</span>
+                    <span class="repo-stars"><strong><img src="https://cdn-icons-png.flaticon.com/128/1828/1828884.png" alt="Star" style="width: 14px; height: 14px; vertical-align: middle;"> 1.269</strong> stars</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/2874/2874791.png" alt="Fork" style="width: 14px; height: 14px; vertical-align: middle;"> 217 forks</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/1005/1005141.png" alt="Code" style="width: 14px; height: 14px; vertical-align: middle;"> Python</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/747/747310.png" alt="Calendar" style="width: 14px; height: 14px; vertical-align: middle;"> 26/04/2017</span>
                 </div>
             </div>
             <div class="repo-item">
                 <div class="repo-header">
-                    <span class="repo-icon">🇧🇷</span>
+                    <img src="https://cdn-icons-png.flaticon.com/128/685/685388.png " alt="Repository" style="width: 20px; height: 20px; opacity: 0.8;">
                     <a href="https://github.com/kvnol/aprenda-frontend" target="_blank" class="repo-name">kvnol/aprenda-frontend</a>
                 </div>
                 <div class="repo-description">:books: Central de conhecimento sobre front-end</div>
                 <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85em;">
-                    <span class="repo-stars"><strong>⭐ 1.101</strong> stars</span>
-                    <span style="color: var(--light-text);">🍴 66 forks</span>
-                    <span style="color: var(--light-text);">💻 N/A</span>
-                    <span style="color: var(--light-text);">📅 10/07/2017</span>
+                    <span class="repo-stars"><strong><img src="https://cdn-icons-png.flaticon.com/128/1828/1828884.png" alt="Star" style="width: 14px; height: 14px; vertical-align: middle;"> 1.101</strong> stars</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/2874/2874791.png" alt="Fork" style="width: 14px; height: 14px; vertical-align: middle;"> 66 forks</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/1005/1005141.png" alt="Code" style="width: 14px; height: 14px; vertical-align: middle;"> N/A</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/747/747310.png" alt="Calendar" style="width: 14px; height: 14px; vertical-align: middle;"> 10/07/2017</span>
                 </div>
             </div>
             <div class="repo-item">
                 <div class="repo-header">
-                    <span class="repo-icon">🇧🇷</span>
+                    <img src="https://cdn-icons-png.flaticon.com/128/685/685388.png " alt="Repository" style="width: 20px; height: 20px; opacity: 0.8;">
                     <a href="https://github.com/turicas/brasil.io" target="_blank" class="repo-name">turicas/brasil.io</a>
                 </div>
                 <div class="repo-description">Backend do Brasil.IO (para código dos scripts de coleta de dados, veja o link na página de cada dataset)</div>
                 <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85em;">
-                    <span class="repo-stars"><strong>⭐ 978</strong> stars</span>
-                    <span style="color: var(--light-text);">🍴 143 forks</span>
-                    <span style="color: var(--light-text);">💻 Python</span>
-                    <span style="color: var(--light-text);">📅 31/03/2014</span>
+                    <span class="repo-stars"><strong><img src="https://cdn-icons-png.flaticon.com/128/1828/1828884.png" alt="Star" style="width: 14px; height: 14px; vertical-align: middle;"> 978</strong> stars</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/2874/2874791.png" alt="Fork" style="width: 14px; height: 14px; vertical-align: middle;"> 143 forks</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/1005/1005141.png" alt="Code" style="width: 14px; height: 14px; vertical-align: middle;"> Python</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/747/747310.png" alt="Calendar" style="width: 14px; height: 14px; vertical-align: middle;"> 31/03/2014</span>
                 </div>
             </div>
             <div class="repo-item">
                 <div class="repo-header">
-                    <span class="repo-icon">🇧🇷</span>
+                    <img src="https://cdn-icons-png.flaticon.com/128/685/685388.png " alt="Repository" style="width: 20px; height: 20px; opacity: 0.8;">
                     <a href="https://github.com/osintbrazuca/osint-brazuca-regex" target="_blank" class="repo-name">osintbrazuca/osint-brazuca-regex</a>
                 </div>
                 <div class="repo-description">Repositório criado com intuito de reunir expressões regulares dentro do contexto Brasil</div>
                 <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85em;">
-                    <span class="repo-stars"><strong>⭐ 960</strong> stars</span>
-                    <span style="color: var(--light-text);">🍴 76 forks</span>
-                    <span style="color: var(--light-text);">💻 N/A</span>
-                    <span style="color: var(--light-text);">📅 09/11/2022</span>
+                    <span class="repo-stars"><strong><img src="https://cdn-icons-png.flaticon.com/128/1828/1828884.png" alt="Star" style="width: 14px; height: 14px; vertical-align: middle;"> 960</strong> stars</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/2874/2874791.png" alt="Fork" style="width: 14px; height: 14px; vertical-align: middle;"> 77 forks</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/1005/1005141.png" alt="Code" style="width: 14px; height: 14px; vertical-align: middle;"> N/A</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/747/747310.png" alt="Calendar" style="width: 14px; height: 14px; vertical-align: middle;"> 09/11/2022</span>
                 </div>
             </div>
             <div class="repo-item">
                 <div class="repo-header">
-                    <span class="repo-icon">🇧🇷</span>
+                    <img src="https://cdn-icons-png.flaticon.com/128/685/685388.png " alt="Repository" style="width: 20px; height: 20px; opacity: 0.8;">
                     <a href="https://github.com/dunossauro/fastapi-do-zero" target="_blank" class="repo-name">dunossauro/fastapi-do-zero</a>
                 </div>
                 <div class="repo-description">Curso básico de FastAPI</div>
                 <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85em;">
-                    <span class="repo-stars"><strong>⭐ 935</strong> stars</span>
-                    <span style="color: var(--light-text);">🍴 116 forks</span>
-                    <span style="color: var(--light-text);">💻 Python</span>
-                    <span style="color: var(--light-text);">📅 13/07/2023</span>
+                    <span class="repo-stars"><strong><img src="https://cdn-icons-png.flaticon.com/128/1828/1828884.png" alt="Star" style="width: 14px; height: 14px; vertical-align: middle;"> 936</strong> stars</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/2874/2874791.png" alt="Fork" style="width: 14px; height: 14px; vertical-align: middle;"> 116 forks</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/1005/1005141.png" alt="Code" style="width: 14px; height: 14px; vertical-align: middle;"> Python</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/747/747310.png" alt="Calendar" style="width: 14px; height: 14px; vertical-align: middle;"> 13/07/2023</span>
                 </div>
             </div>
             <div class="repo-item">
                 <div class="repo-header">
-                    <span class="repo-icon">🇧🇷</span>
+                    <img src="https://cdn-icons-png.flaticon.com/128/685/685388.png " alt="Repository" style="width: 20px; height: 20px; opacity: 0.8;">
                     <a href="https://github.com/ti-no-canada/imigracao-para-o-canada" target="_blank" class="repo-name">ti-no-canada/imigracao-para-o-canada</a>
                 </div>
                 <div class="repo-description">Repositorio geral do grupo no telegram TI no Canada</div>
                 <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85em;">
-                    <span class="repo-stars"><strong>⭐ 934</strong> stars</span>
-                    <span style="color: var(--light-text);">🍴 69 forks</span>
-                    <span style="color: var(--light-text);">💻 N/A</span>
-                    <span style="color: var(--light-text);">📅 22/02/2019</span>
+                    <span class="repo-stars"><strong><img src="https://cdn-icons-png.flaticon.com/128/1828/1828884.png" alt="Star" style="width: 14px; height: 14px; vertical-align: middle;"> 934</strong> stars</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/2874/2874791.png" alt="Fork" style="width: 14px; height: 14px; vertical-align: middle;"> 69 forks</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/1005/1005141.png" alt="Code" style="width: 14px; height: 14px; vertical-align: middle;"> N/A</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/747/747310.png" alt="Calendar" style="width: 14px; height: 14px; vertical-align: middle;"> 22/02/2019</span>
                 </div>
             </div>
             <div class="repo-item">
                 <div class="repo-header">
-                    <span class="repo-icon">🇧🇷</span>
+                    <img src="https://cdn-icons-png.flaticon.com/128/685/685388.png " alt="Repository" style="width: 20px; height: 20px; opacity: 0.8;">
                     <a href="https://github.com/ipeaGIT/geobr" target="_blank" class="repo-name">ipeaGIT/geobr</a>
                 </div>
                 <div class="repo-description">Easy access to official spatial data sets of Brazil in R and Python</div>
                 <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85em;">
-                    <span class="repo-stars"><strong>⭐ 884</strong> stars</span>
-                    <span style="color: var(--light-text);">🍴 122 forks</span>
-                    <span style="color: var(--light-text);">💻 R</span>
-                    <span style="color: var(--light-text);">📅 22/03/2019</span>
+                    <span class="repo-stars"><strong><img src="https://cdn-icons-png.flaticon.com/128/1828/1828884.png" alt="Star" style="width: 14px; height: 14px; vertical-align: middle;"> 884</strong> stars</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/2874/2874791.png" alt="Fork" style="width: 14px; height: 14px; vertical-align: middle;"> 122 forks</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/1005/1005141.png" alt="Code" style="width: 14px; height: 14px; vertical-align: middle;"> R</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/747/747310.png" alt="Calendar" style="width: 14px; height: 14px; vertical-align: middle;"> 22/03/2019</span>
                 </div>
             </div>
             <div class="repo-item">
                 <div class="repo-header">
-                    <span class="repo-icon">🇧🇷</span>
+                    <img src="https://cdn-icons-png.flaticon.com/128/685/685388.png " alt="Repository" style="width: 20px; height: 20px; opacity: 0.8;">
                     <a href="https://github.com/tbrugz/geodata-br" target="_blank" class="repo-name">tbrugz/geodata-br</a>
                 </div>
                 <div class="repo-description">Arquivos Geojson com perímetros dos municípios brasileiros por estado ( Brasil / Brazil )</div>
                 <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85em;">
-                    <span class="repo-stars"><strong>⭐ 852</strong> stars</span>
-                    <span style="color: var(--light-text);">🍴 364 forks</span>
-                    <span style="color: var(--light-text);">💻 N/A</span>
-                    <span style="color: var(--light-text);">📅 03/11/2015</span>
+                    <span class="repo-stars"><strong><img src="https://cdn-icons-png.flaticon.com/128/1828/1828884.png" alt="Star" style="width: 14px; height: 14px; vertical-align: middle;"> 852</strong> stars</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/2874/2874791.png" alt="Fork" style="width: 14px; height: 14px; vertical-align: middle;"> 364 forks</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/1005/1005141.png" alt="Code" style="width: 14px; height: 14px; vertical-align: middle;"> N/A</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/747/747310.png" alt="Calendar" style="width: 14px; height: 14px; vertical-align: middle;"> 03/11/2015</span>
                 </div>
             </div>
             <div class="repo-item">
                 <div class="repo-header">
-                    <span class="repo-icon">🇧🇷</span>
+                    <img src="https://cdn-icons-png.flaticon.com/128/685/685388.png " alt="Repository" style="width: 20px; height: 20px; opacity: 0.8;">
                     <a href="https://github.com/felipeorlando/aprenda-rubyonrails" target="_blank" class="repo-name">felipeorlando/aprenda-rubyonrails</a>
                 </div>
                 <div class="repo-description">🇧🇷 Recursos para aprender Ruby e Rails</div>
                 <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85em;">
-                    <span class="repo-stars"><strong>⭐ 819</strong> stars</span>
-                    <span style="color: var(--light-text);">🍴 75 forks</span>
-                    <span style="color: var(--light-text);">💻 N/A</span>
-                    <span style="color: var(--light-text);">📅 01/12/2015</span>
+                    <span class="repo-stars"><strong><img src="https://cdn-icons-png.flaticon.com/128/1828/1828884.png" alt="Star" style="width: 14px; height: 14px; vertical-align: middle;"> 819</strong> stars</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/2874/2874791.png" alt="Fork" style="width: 14px; height: 14px; vertical-align: middle;"> 75 forks</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/1005/1005141.png" alt="Code" style="width: 14px; height: 14px; vertical-align: middle;"> N/A</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/747/747310.png" alt="Calendar" style="width: 14px; height: 14px; vertical-align: middle;"> 01/12/2015</span>
                 </div>
             </div>
             <div class="repo-item">
                 <div class="repo-header">
-                    <span class="repo-icon">🇧🇷</span>
+                    <img src="https://cdn-icons-png.flaticon.com/128/685/685388.png " alt="Repository" style="width: 20px; height: 20px; opacity: 0.8;">
                     <a href="https://github.com/github/brasil" target="_blank" class="repo-name">github/brasil</a>
                 </div>
                 <div class="repo-description">Recursos e informações do GitHub para a comunidade tech do Brasil.</div>
                 <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85em;">
-                    <span class="repo-stars"><strong>⭐ 679</strong> stars</span>
-                    <span style="color: var(--light-text);">🍴 90 forks</span>
-                    <span style="color: var(--light-text);">💻 Ruby</span>
-                    <span style="color: var(--light-text);">📅 28/04/2023</span>
+                    <span class="repo-stars"><strong><img src="https://cdn-icons-png.flaticon.com/128/1828/1828884.png" alt="Star" style="width: 14px; height: 14px; vertical-align: middle;"> 679</strong> stars</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/2874/2874791.png" alt="Fork" style="width: 14px; height: 14px; vertical-align: middle;"> 90 forks</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/1005/1005141.png" alt="Code" style="width: 14px; height: 14px; vertical-align: middle;"> Ruby</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/747/747310.png" alt="Calendar" style="width: 14px; height: 14px; vertical-align: middle;"> 28/04/2023</span>
                 </div>
             </div>
             <div class="repo-item">
                 <div class="repo-header">
-                    <span class="repo-icon">🇧🇷</span>
+                    <img src="https://cdn-icons-png.flaticon.com/128/685/685388.png " alt="Repository" style="width: 20px; height: 20px; opacity: 0.8;">
                     <a href="https://github.com/turicas/socios-brasil" target="_blank" class="repo-name">turicas/socios-brasil</a>
                 </div>
                 <div class="repo-description">Captura os dados de sócios das empresas brasileiras na Receita Federal e exporta para um formato legível por humanos</div>
                 <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85em;">
-                    <span class="repo-stars"><strong>⭐ 599</strong> stars</span>
-                    <span style="color: var(--light-text);">🍴 130 forks</span>
-                    <span style="color: var(--light-text);">💻 Python</span>
-                    <span style="color: var(--light-text);">📅 01/02/2018</span>
+                    <span class="repo-stars"><strong><img src="https://cdn-icons-png.flaticon.com/128/1828/1828884.png" alt="Star" style="width: 14px; height: 14px; vertical-align: middle;"> 599</strong> stars</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/2874/2874791.png" alt="Fork" style="width: 14px; height: 14px; vertical-align: middle;"> 130 forks</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/1005/1005141.png" alt="Code" style="width: 14px; height: 14px; vertical-align: middle;"> Python</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/747/747310.png" alt="Calendar" style="width: 14px; height: 14px; vertical-align: middle;"> 01/02/2018</span>
                 </div>
             </div>
             <div class="repo-item">
                 <div class="repo-header">
-                    <span class="repo-icon">🇧🇷</span>
+                    <img src="https://cdn-icons-png.flaticon.com/128/685/685388.png " alt="Repository" style="width: 20px; height: 20px; opacity: 0.8;">
                     <a href="https://github.com/marcopaganini/gnome-cedilla-fix" target="_blank" class="repo-name">marcopaganini/gnome-cedilla-fix</a>
                 </div>
                 <div class="repo-description">A fix to make the Gnome "US-International" layouts generate a cedilla c (ç) when the user types '+c.</div>
                 <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85em;">
-                    <span class="repo-stars"><strong>⭐ 521</strong> stars</span>
-                    <span style="color: var(--light-text);">🍴 71 forks</span>
-                    <span style="color: var(--light-text);">💻 Shell</span>
-                    <span style="color: var(--light-text);">📅 28/02/2016</span>
+                    <span class="repo-stars"><strong><img src="https://cdn-icons-png.flaticon.com/128/1828/1828884.png" alt="Star" style="width: 14px; height: 14px; vertical-align: middle;"> 521</strong> stars</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/2874/2874791.png" alt="Fork" style="width: 14px; height: 14px; vertical-align: middle;"> 71 forks</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/1005/1005141.png" alt="Code" style="width: 14px; height: 14px; vertical-align: middle;"> Shell</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/747/747310.png" alt="Calendar" style="width: 14px; height: 14px; vertical-align: middle;"> 28/02/2016</span>
                 </div>
             </div>
             <div class="repo-item">
                 <div class="repo-header">
-                    <span class="repo-icon">🇧🇷</span>
+                    <img src="https://cdn-icons-png.flaticon.com/128/685/685388.png " alt="Repository" style="width: 20px; height: 20px; opacity: 0.8;">
                     <a href="https://github.com/Tpessia/dados-financeiros" target="_blank" class="repo-name">Tpessia/dados-financeiros</a>
                 </div>
                 <div class="repo-description">Repositório de Fontes de Dados Financeiros</div>
                 <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85em;">
-                    <span class="repo-stars"><strong>⭐ 434</strong> stars</span>
-                    <span style="color: var(--light-text);">🍴 65 forks</span>
-                    <span style="color: var(--light-text);">💻 TypeScript</span>
-                    <span style="color: var(--light-text);">📅 04/08/2021</span>
+                    <span class="repo-stars"><strong><img src="https://cdn-icons-png.flaticon.com/128/1828/1828884.png" alt="Star" style="width: 14px; height: 14px; vertical-align: middle;"> 434</strong> stars</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/2874/2874791.png" alt="Fork" style="width: 14px; height: 14px; vertical-align: middle;"> 65 forks</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/1005/1005141.png" alt="Code" style="width: 14px; height: 14px; vertical-align: middle;"> TypeScript</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/747/747310.png" alt="Calendar" style="width: 14px; height: 14px; vertical-align: middle;"> 04/08/2021</span>
                 </div>
             </div>
             <div class="repo-item">
                 <div class="repo-header">
-                    <span class="repo-icon">🇧🇷</span>
+                    <img src="https://cdn-icons-png.flaticon.com/128/685/685388.png " alt="Repository" style="width: 20px; height: 20px; opacity: 0.8;">
                     <a href="https://github.com/tiagoporto/gerador-validador-cpf" target="_blank" class="repo-name">tiagoporto/gerador-validador-cpf</a>
                 </div>
                 <div class="repo-description">JS lib to generate and validate CPF (Cadastro de Pessoas Físicas) of Brazil.</div>
                 <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85em;">
-                    <span class="repo-stars"><strong>⭐ 402</strong> stars</span>
-                    <span style="color: var(--light-text);">🍴 77 forks</span>
-                    <span style="color: var(--light-text);">💻 TypeScript</span>
-                    <span style="color: var(--light-text);">📅 18/06/2014</span>
+                    <span class="repo-stars"><strong><img src="https://cdn-icons-png.flaticon.com/128/1828/1828884.png" alt="Star" style="width: 14px; height: 14px; vertical-align: middle;"> 402</strong> stars</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/2874/2874791.png" alt="Fork" style="width: 14px; height: 14px; vertical-align: middle;"> 77 forks</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/1005/1005141.png" alt="Code" style="width: 14px; height: 14px; vertical-align: middle;"> TypeScript</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/747/747310.png" alt="Calendar" style="width: 14px; height: 14px; vertical-align: middle;"> 18/06/2014</span>
                 </div>
             </div>
             <div class="repo-item">
                 <div class="repo-header">
-                    <span class="repo-icon">🇧🇷</span>
+                    <img src="https://cdn-icons-png.flaticon.com/128/685/685388.png " alt="Repository" style="width: 20px; height: 20px; opacity: 0.8;">
                     <a href="https://github.com/brazilian-utils/python" target="_blank" class="repo-name">brazilian-utils/python</a>
                 </div>
                 <div class="repo-description">Biblioteca de utilitários projetada para validar, gerar e manipular dados de acordo com as particularidades do Brasil 🇧🇷</div>
                 <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85em;">
-                    <span class="repo-stars"><strong>⭐ 393</strong> stars</span>
-                    <span style="color: var(--light-text);">🍴 108 forks</span>
-                    <span style="color: var(--light-text);">💻 Python</span>
-                    <span style="color: var(--light-text);">📅 10/01/2017</span>
+                    <span class="repo-stars"><strong><img src="https://cdn-icons-png.flaticon.com/128/1828/1828884.png" alt="Star" style="width: 14px; height: 14px; vertical-align: middle;"> 395</strong> stars</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/2874/2874791.png" alt="Fork" style="width: 14px; height: 14px; vertical-align: middle;"> 108 forks</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/1005/1005141.png" alt="Code" style="width: 14px; height: 14px; vertical-align: middle;"> Python</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/747/747310.png" alt="Calendar" style="width: 14px; height: 14px; vertical-align: middle;"> 10/01/2017</span>
                 </div>
             </div>
             <div class="repo-item">
                 <div class="repo-header">
-                    <span class="repo-icon">🇧🇷</span>
+                    <img src="https://cdn-icons-png.flaticon.com/128/685/685388.png " alt="Repository" style="width: 20px; height: 20px; opacity: 0.8;">
                     <a href="https://github.com/polemicas-e-tretas-dev/polemicas-e-tretas-dev" target="_blank" class="repo-name">polemicas-e-tretas-dev/polemicas-e-tretas-dev</a>
                 </div>
                 <div class="repo-description">As polêmicas e tretas 🇧🇷 versionadas</div>
                 <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85em;">
-                    <span class="repo-stars"><strong>⭐ 315</strong> stars</span>
-                    <span style="color: var(--light-text);">🍴 4 forks</span>
-                    <span style="color: var(--light-text);">💻 N/A</span>
-                    <span style="color: var(--light-text);">📅 22/09/2020</span>
+                    <span class="repo-stars"><strong><img src="https://cdn-icons-png.flaticon.com/128/1828/1828884.png" alt="Star" style="width: 14px; height: 14px; vertical-align: middle;"> 315</strong> stars</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/2874/2874791.png" alt="Fork" style="width: 14px; height: 14px; vertical-align: middle;"> 4 forks</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/1005/1005141.png" alt="Code" style="width: 14px; height: 14px; vertical-align: middle;"> N/A</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/747/747310.png" alt="Calendar" style="width: 14px; height: 14px; vertical-align: middle;"> 22/09/2020</span>
                 </div>
             </div>
             <div class="repo-item">
                 <div class="repo-header">
-                    <span class="repo-icon">🇧🇷</span>
+                    <img src="https://cdn-icons-png.flaticon.com/128/685/685388.png " alt="Repository" style="width: 20px; height: 20px; opacity: 0.8;">
                     <a href="https://github.com/devarthurribeiro/covid19-brazil-api" target="_blank" class="repo-name">devarthurribeiro/covid19-brazil-api</a>
                 </div>
                 <div class="repo-description">API com dados atualizados sobre o status do COVID-19 🦠</div>
                 <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85em;">
-                    <span class="repo-stars"><strong>⭐ 296</strong> stars</span>
-                    <span style="color: var(--light-text);">🍴 45 forks</span>
-                    <span style="color: var(--light-text);">💻 JavaScript</span>
-                    <span style="color: var(--light-text);">📅 18/03/2020</span>
+                    <span class="repo-stars"><strong><img src="https://cdn-icons-png.flaticon.com/128/1828/1828884.png" alt="Star" style="width: 14px; height: 14px; vertical-align: middle;"> 296</strong> stars</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/2874/2874791.png" alt="Fork" style="width: 14px; height: 14px; vertical-align: middle;"> 45 forks</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/1005/1005141.png" alt="Code" style="width: 14px; height: 14px; vertical-align: middle;"> JavaScript</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/747/747310.png" alt="Calendar" style="width: 14px; height: 14px; vertical-align: middle;"> 18/03/2020</span>
                 </div>
             </div>
             <div class="repo-item">
                 <div class="repo-header">
-                    <span class="repo-icon">🇧🇷</span>
+                    <img src="https://cdn-icons-png.flaticon.com/128/685/685388.png " alt="Repository" style="width: 20px; height: 20px; opacity: 0.8;">
                     <a href="https://github.com/dadosgovbr/catalogos-dados-brasil" target="_blank" class="repo-name">dadosgovbr/catalogos-dados-brasil</a>
                 </div>
                 <div class="repo-description">Mapeamento de iniciativas (e catálogos) de dados abertos governamentais no Brasil.</div>
                 <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85em;">
-                    <span class="repo-stars"><strong>⭐ 263</strong> stars</span>
-                    <span style="color: var(--light-text);">🍴 52 forks</span>
-                    <span style="color: var(--light-text);">💻 Jupyter Notebook</span>
-                    <span style="color: var(--light-text);">📅 17/07/2015</span>
+                    <span class="repo-stars"><strong><img src="https://cdn-icons-png.flaticon.com/128/1828/1828884.png" alt="Star" style="width: 14px; height: 14px; vertical-align: middle;"> 263</strong> stars</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/2874/2874791.png" alt="Fork" style="width: 14px; height: 14px; vertical-align: middle;"> 52 forks</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/1005/1005141.png" alt="Code" style="width: 14px; height: 14px; vertical-align: middle;"> Jupyter Notebook</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/747/747310.png" alt="Calendar" style="width: 14px; height: 14px; vertical-align: middle;"> 17/07/2015</span>
                 </div>
             </div>
             <div class="repo-item">
                 <div class="repo-header">
-                    <span class="repo-icon">🇧🇷</span>
+                    <img src="https://cdn-icons-png.flaticon.com/128/685/685388.png " alt="Repository" style="width: 20px; height: 20px; opacity: 0.8;">
                     <a href="https://github.com/laravelbrasil/forum" target="_blank" class="repo-name">laravelbrasil/forum</a>
                 </div>
                 <div class="repo-description">Ama Laravel? Torne se um Jedi e Ajude outros Padawans </div>
                 <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85em;">
-                    <span class="repo-stars"><strong>⭐ 253</strong> stars</span>
-                    <span style="color: var(--light-text);">🍴 13 forks</span>
-                    <span style="color: var(--light-text);">💻 N/A</span>
-                    <span style="color: var(--light-text);">📅 06/02/2017</span>
+                    <span class="repo-stars"><strong><img src="https://cdn-icons-png.flaticon.com/128/1828/1828884.png" alt="Star" style="width: 14px; height: 14px; vertical-align: middle;"> 253</strong> stars</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/2874/2874791.png" alt="Fork" style="width: 14px; height: 14px; vertical-align: middle;"> 13 forks</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/1005/1005141.png" alt="Code" style="width: 14px; height: 14px; vertical-align: middle;"> N/A</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/747/747310.png" alt="Calendar" style="width: 14px; height: 14px; vertical-align: middle;"> 06/02/2017</span>
                 </div>
             </div>
             <div class="repo-item">
                 <div class="repo-header">
-                    <span class="repo-icon">🇧🇷</span>
+                    <img src="https://cdn-icons-png.flaticon.com/128/685/685388.png " alt="Repository" style="width: 20px; height: 20px; opacity: 0.8;">
                     <a href="https://github.com/turicas/salarios-magistrados" target="_blank" class="repo-name">turicas/salarios-magistrados</a>
                 </div>
                 <div class="repo-description">Baixa as planilhas de salários de magistrados, extrai os contracheques, limpa e exporta pra CSV</div>
                 <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85em;">
-                    <span class="repo-stars"><strong>⭐ 252</strong> stars</span>
-                    <span style="color: var(--light-text);">🍴 37 forks</span>
-                    <span style="color: var(--light-text);">💻 Python</span>
-                    <span style="color: var(--light-text);">📅 19/12/2017</span>
+                    <span class="repo-stars"><strong><img src="https://cdn-icons-png.flaticon.com/128/1828/1828884.png" alt="Star" style="width: 14px; height: 14px; vertical-align: middle;"> 252</strong> stars</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/2874/2874791.png" alt="Fork" style="width: 14px; height: 14px; vertical-align: middle;"> 37 forks</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/1005/1005141.png" alt="Code" style="width: 14px; height: 14px; vertical-align: middle;"> Python</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/747/747310.png" alt="Calendar" style="width: 14px; height: 14px; vertical-align: middle;"> 19/12/2017</span>
                 </div>
             </div>
             <div class="repo-item">
                 <div class="repo-header">
-                    <span class="repo-icon">🇧🇷</span>
+                    <img src="https://cdn-icons-png.flaticon.com/128/685/685388.png " alt="Repository" style="width: 20px; height: 20px; opacity: 0.8;">
                     <a href="https://github.com/mstuttgart/brazilcep" target="_blank" class="repo-name">mstuttgart/brazilcep</a>
                 </div>
                 <div class="repo-description">:brazil: Minimalist and easy-to-use Python library designed to query CEP (Postal Address Code) data.</div>
                 <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85em;">
-                    <span class="repo-stars"><strong>⭐ 236</strong> stars</span>
-                    <span style="color: var(--light-text);">🍴 59 forks</span>
-                    <span style="color: var(--light-text);">💻 Python</span>
-                    <span style="color: var(--light-text);">📅 05/09/2015</span>
+                    <span class="repo-stars"><strong><img src="https://cdn-icons-png.flaticon.com/128/1828/1828884.png" alt="Star" style="width: 14px; height: 14px; vertical-align: middle;"> 236</strong> stars</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/2874/2874791.png" alt="Fork" style="width: 14px; height: 14px; vertical-align: middle;"> 59 forks</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/1005/1005141.png" alt="Code" style="width: 14px; height: 14px; vertical-align: middle;"> Python</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/747/747310.png" alt="Calendar" style="width: 14px; height: 14px; vertical-align: middle;"> 05/09/2015</span>
                 </div>
             </div>
             <div class="repo-item">
                 <div class="repo-header">
-                    <span class="repo-icon">🇧🇷</span>
+                    <img src="https://cdn-icons-png.flaticon.com/128/685/685388.png " alt="Repository" style="width: 20px; height: 20px; opacity: 0.8;">
                     <a href="https://github.com/brazanation/php-documents" target="_blank" class="repo-name">brazanation/php-documents</a>
                 </div>
                 <div class="repo-description">Library to provide Brazilian Documents as Value Objects in PHP</div>
                 <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85em;">
-                    <span class="repo-stars"><strong>⭐ 215</strong> stars</span>
-                    <span style="color: var(--light-text);">🍴 21 forks</span>
-                    <span style="color: var(--light-text);">💻 PHP</span>
-                    <span style="color: var(--light-text);">📅 21/08/2016</span>
+                    <span class="repo-stars"><strong><img src="https://cdn-icons-png.flaticon.com/128/1828/1828884.png" alt="Star" style="width: 14px; height: 14px; vertical-align: middle;"> 215</strong> stars</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/2874/2874791.png" alt="Fork" style="width: 14px; height: 14px; vertical-align: middle;"> 21 forks</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/1005/1005141.png" alt="Code" style="width: 14px; height: 14px; vertical-align: middle;"> PHP</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/747/747310.png" alt="Calendar" style="width: 14px; height: 14px; vertical-align: middle;"> 21/08/2016</span>
                 </div>
             </div>
             <div class="repo-item">
                 <div class="repo-header">
-                    <span class="repo-icon">🇧🇷</span>
+                    <img src="https://cdn-icons-png.flaticon.com/128/685/685388.png " alt="Repository" style="width: 20px; height: 20px; opacity: 0.8;">
                     <a href="https://github.com/Inspire-Poli-USP/Inspire-OpenLung" target="_blank" class="repo-name">Inspire-Poli-USP/Inspire-OpenLung</a>
                 </div>
                 <div class="repo-description">An [IN PROGRESS] open source, low cost, low resource, quick deployment ventilator design that utilizes a Ambu-bag as a core component. Another project into the "war" against COVID-19. [Repo in Potuguese]</div>
                 <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85em;">
-                    <span class="repo-stars"><strong>⭐ 199</strong> stars</span>
-                    <span style="color: var(--light-text);">🍴 52 forks</span>
-                    <span style="color: var(--light-text);">💻 N/A</span>
-                    <span style="color: var(--light-text);">📅 21/03/2020</span>
+                    <span class="repo-stars"><strong><img src="https://cdn-icons-png.flaticon.com/128/1828/1828884.png" alt="Star" style="width: 14px; height: 14px; vertical-align: middle;"> 199</strong> stars</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/2874/2874791.png" alt="Fork" style="width: 14px; height: 14px; vertical-align: middle;"> 52 forks</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/1005/1005141.png" alt="Code" style="width: 14px; height: 14px; vertical-align: middle;"> N/A</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/747/747310.png" alt="Calendar" style="width: 14px; height: 14px; vertical-align: middle;"> 21/03/2020</span>
                 </div>
             </div>
             </div>
         </div>
 
         <div id="devs" class="tab-content">
-            <h3 style="color: var(--secondary-color); margin-bottom: 15px;">👥 Top Desenvolvedores Brasileiros no GitHub</h3>
+            <h3>
+                <img src="https://cdn-icons-png.flaticon.com/128/681/681494.png" alt="Users" style="width: 24px; height: 24px; vertical-align: middle; margin-right: 8px;">
+                Top Desenvolvedores Brasileiros no GitHub
+            </h3>
             <div class="repo-list">
 
             <div class="repo-item">
@@ -915,8 +799,8 @@
                 </div>
                 <div class="repo-description">Nerd por natureza. Professor por vocação. Estou aqui para compartilhar conteúdos para iniciantes em Tecnologia.</div>
                 <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85em;">
-                    <span class="repo-stars"><strong>👥 107304</strong> seguidores</span>
-                    <span style="color: var(--light-text);">👤 User</span>
+                    <span class="repo-stars"><strong><img src="https://cdn-icons-png.flaticon.com/128/681/681494.png" alt="Followers" style="width: 14px; height: 14px; vertical-align: middle;"> 107364</strong> seguidores</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/1077/1077114.png" alt="User" style="width: 14px; height: 14px; vertical-align: middle;"> User</span>
                 </div>
             </div>
             <div class="repo-item">
@@ -926,8 +810,8 @@
                 </div>
                 <div class="repo-description">CTO at @Rocketseat. Passionate about education and changing people's lives through programming.</div>
                 <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85em;">
-                    <span class="repo-stars"><strong>👥 32537</strong> seguidores</span>
-                    <span style="color: var(--light-text);">👤 User</span>
+                    <span class="repo-stars"><strong><img src="https://cdn-icons-png.flaticon.com/128/681/681494.png" alt="Followers" style="width: 14px; height: 14px; vertical-align: middle;"> 32541</strong> seguidores</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/1077/1077114.png" alt="User" style="width: 14px; height: 14px; vertical-align: middle;"> User</span>
                 </div>
             </div>
             <div class="repo-item">
@@ -937,8 +821,8 @@
                 </div>
                 <div class="repo-description">Sênior Web Dev & Instructor focused on helping people start programming for web - #html #css #javascript #sql #react #nodejs #fullstack</div>
                 <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85em;">
-                    <span class="repo-stars"><strong>👥 16539</strong> seguidores</span>
-                    <span style="color: var(--light-text);">👤 User</span>
+                    <span class="repo-stars"><strong><img src="https://cdn-icons-png.flaticon.com/128/681/681494.png" alt="Followers" style="width: 14px; height: 14px; vertical-align: middle;"> 16542</strong> seguidores</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/1077/1077114.png" alt="User" style="width: 14px; height: 14px; vertical-align: middle;"> User</span>
                 </div>
             </div>
             <div class="repo-item">
@@ -949,8 +833,8 @@
                 <div class="repo-description">Ajudo estudantes e profissionais de programação a ingressar ou se recolocar na carreira.
 20 anos de experiência profissional, mais de 160 mil alunos online. </div>
                 <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85em;">
-                    <span class="repo-stars"><strong>👥 13424</strong> seguidores</span>
-                    <span style="color: var(--light-text);">👤 User</span>
+                    <span class="repo-stars"><strong><img src="https://cdn-icons-png.flaticon.com/128/681/681494.png" alt="Followers" style="width: 14px; height: 14px; vertical-align: middle;"> 13434</strong> seguidores</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/1077/1077114.png" alt="User" style="width: 14px; height: 14px; vertical-align: middle;"> User</span>
                 </div>
             </div>
             <div class="repo-item">
@@ -960,8 +844,8 @@
                 </div>
                 <div class="repo-description">Professor de Tecnologia</div>
                 <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85em;">
-                    <span class="repo-stars"><strong>👥 12339</strong> seguidores</span>
-                    <span style="color: var(--light-text);">👤 User</span>
+                    <span class="repo-stars"><strong><img src="https://cdn-icons-png.flaticon.com/128/681/681494.png" alt="Followers" style="width: 14px; height: 14px; vertical-align: middle;"> 12345</strong> seguidores</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/1077/1077114.png" alt="User" style="width: 14px; height: 14px; vertical-align: middle;"> User</span>
                 </div>
             </div>
             <div class="repo-item">
@@ -971,8 +855,8 @@
                 </div>
                 <div class="repo-description">Codeminer 42 co-founder (offshore outsourcing). Former THECONF organizer (since 2017). Former Rubyconf Brasil Organizer (2008-2016)</div>
                 <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85em;">
-                    <span class="repo-stars"><strong>👥 11984</strong> seguidores</span>
-                    <span style="color: var(--light-text);">👤 User</span>
+                    <span class="repo-stars"><strong><img src="https://cdn-icons-png.flaticon.com/128/681/681494.png" alt="Followers" style="width: 14px; height: 14px; vertical-align: middle;"> 11990</strong> seguidores</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/1077/1077114.png" alt="User" style="width: 14px; height: 14px; vertical-align: middle;"> User</span>
                 </div>
             </div>
             <div class="repo-item">
@@ -982,8 +866,8 @@
                 </div>
                 <div class="repo-description">Professional JS Educator, Microsoft MVP, Google Dev Expert, GitHub Star Alumni, OpenJS Path Finder Educator '23, @nodejs ambassador, Keynote Speaker🇧🇷</div>
                 <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85em;">
-                    <span class="repo-stars"><strong>👥 10693</strong> seguidores</span>
-                    <span style="color: var(--light-text);">👤 User</span>
+                    <span class="repo-stars"><strong><img src="https://cdn-icons-png.flaticon.com/128/681/681494.png" alt="Followers" style="width: 14px; height: 14px; vertical-align: middle;"> 10695</strong> seguidores</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/1077/1077114.png" alt="User" style="width: 14px; height: 14px; vertical-align: middle;"> User</span>
                 </div>
             </div>
             <div class="repo-item">
@@ -993,8 +877,8 @@
                 </div>
                 <div class="repo-description">Software Engineer & Infrastructure Analyst with passions in Cybersecurity.</div>
                 <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85em;">
-                    <span class="repo-stars"><strong>👥 9782</strong> seguidores</span>
-                    <span style="color: var(--light-text);">👤 User</span>
+                    <span class="repo-stars"><strong><img src="https://cdn-icons-png.flaticon.com/128/681/681494.png" alt="Followers" style="width: 14px; height: 14px; vertical-align: middle;"> 9785</strong> seguidores</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/1077/1077114.png" alt="User" style="width: 14px; height: 14px; vertical-align: middle;"> User</span>
                 </div>
             </div>
             <div class="repo-item">
@@ -1004,8 +888,8 @@
                 </div>
                 <div class="repo-description">Systems Analysis and Development Student at IFPI | Embedded Systems Resident</div>
                 <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85em;">
-                    <span class="repo-stars"><strong>👥 9224</strong> seguidores</span>
-                    <span style="color: var(--light-text);">👤 User</span>
+                    <span class="repo-stars"><strong><img src="https://cdn-icons-png.flaticon.com/128/681/681494.png" alt="Followers" style="width: 14px; height: 14px; vertical-align: middle;"> 9227</strong> seguidores</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/1077/1077114.png" alt="User" style="width: 14px; height: 14px; vertical-align: middle;"> User</span>
                 </div>
             </div>
             <div class="repo-item">
@@ -1015,173 +899,178 @@
                 </div>
                 <div class="repo-description">Curso em Vídeo - Cursos gratuitos com certificado</div>
                 <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85em;">
-                    <span class="repo-stars"><strong>👥 8958</strong> seguidores</span>
-                    <span style="color: var(--light-text);">👤 Organization</span>
+                    <span class="repo-stars"><strong><img src="https://cdn-icons-png.flaticon.com/128/681/681494.png" alt="Followers" style="width: 14px; height: 14px; vertical-align: middle;"> 8965</strong> seguidores</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/1077/1077114.png" alt="User" style="width: 14px; height: 14px; vertical-align: middle;"> Organization</span>
                 </div>
             </div>
             <div class="repo-item">
                 <div class="repo-header">
-                    <img src="undefined" alt="undefined" style="width: 40px; height: 40px; border-radius: 50%; margin-right: 10px;">
-                    <a href="undefined" target="_blank" class="repo-name">undefined</a>
+                    <img src="https://avatars.githubusercontent.com/u/553862?v=4" alt="luizomf" style="width: 40px; height: 40px; border-radius: 50%; margin-right: 10px;">
+                    <a href="https://github.com/luizomf" target="_blank" class="repo-name">luizomf</a>
                 </div>
-                <div class="repo-description">Sem bio</div>
+                <div class="repo-description">Fui técnico, administrador de redes, trabalhei com devOps, fui desenvolvedor back-end e fron-end...  Hoje só quero aprender e ensinar o que aprendi.</div>
                 <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85em;">
-                    <span class="repo-stars"><strong>👥 0</strong> seguidores</span>
-                    <span style="color: var(--light-text);">👤 undefined</span>
+                    <span class="repo-stars"><strong><img src="https://cdn-icons-png.flaticon.com/128/681/681494.png" alt="Followers" style="width: 14px; height: 14px; vertical-align: middle;"> 8589</strong> seguidores</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/1077/1077114.png" alt="User" style="width: 14px; height: 14px; vertical-align: middle;"> User</span>
                 </div>
             </div>
             <div class="repo-item">
                 <div class="repo-header">
-                    <img src="undefined" alt="undefined" style="width: 40px; height: 40px; border-radius: 50%; margin-right: 10px;">
-                    <a href="undefined" target="_blank" class="repo-name">undefined</a>
+                    <img src="https://avatars.githubusercontent.com/u/93167956?v=4" alt="alineai18" style="width: 40px; height: 40px; border-radius: 50%; margin-right: 10px;">
+                    <a href="https://github.com/alineai18" target="_blank" class="repo-name">alineai18</a>
                 </div>
-                <div class="repo-description">Sem bio</div>
+                <div class="repo-description"> 🌈  I am a persistent script girl.
+
+I believe in people's freedom, and I am currently learning @aplus-framework ⭐</div>
                 <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85em;">
-                    <span class="repo-stars"><strong>👥 0</strong> seguidores</span>
-                    <span style="color: var(--light-text);">👤 undefined</span>
+                    <span class="repo-stars"><strong><img src="https://cdn-icons-png.flaticon.com/128/681/681494.png" alt="Followers" style="width: 14px; height: 14px; vertical-align: middle;"> 8315</strong> seguidores</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/1077/1077114.png" alt="User" style="width: 14px; height: 14px; vertical-align: middle;"> User</span>
                 </div>
             </div>
             <div class="repo-item">
                 <div class="repo-header">
-                    <img src="undefined" alt="undefined" style="width: 40px; height: 40px; border-radius: 50%; margin-right: 10px;">
-                    <a href="undefined" target="_blank" class="repo-name">undefined</a>
+                    <img src="https://avatars.githubusercontent.com/u/20961091?v=4" alt="Rafaelmdcarneiro" style="width: 40px; height: 40px; border-radius: 50%; margin-right: 10px;">
+                    <a href="https://github.com/Rafaelmdcarneiro" target="_blank" class="repo-name">Rafaelmdcarneiro</a>
                 </div>
-                <div class="repo-description">Sem bio</div>
+                <div class="repo-description">I'm CEO of O2D, a Brazilian software development company. Rust enthusiast!</div>
                 <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85em;">
-                    <span class="repo-stars"><strong>👥 0</strong> seguidores</span>
-                    <span style="color: var(--light-text);">👤 undefined</span>
+                    <span class="repo-stars"><strong><img src="https://cdn-icons-png.flaticon.com/128/681/681494.png" alt="Followers" style="width: 14px; height: 14px; vertical-align: middle;"> 8136</strong> seguidores</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/1077/1077114.png" alt="User" style="width: 14px; height: 14px; vertical-align: middle;"> User</span>
                 </div>
             </div>
             <div class="repo-item">
                 <div class="repo-header">
-                    <img src="undefined" alt="undefined" style="width: 40px; height: 40px; border-radius: 50%; margin-right: 10px;">
-                    <a href="undefined" target="_blank" class="repo-name">undefined</a>
+                    <img src="https://avatars.githubusercontent.com/u/64323124?v=4" alt="cami-la" style="width: 40px; height: 40px; border-radius: 50%; margin-right: 10px;">
+                    <a href="https://github.com/cami-la" target="_blank" class="repo-name">cami-la</a>
                 </div>
                 <div class="repo-description">Sem bio</div>
                 <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85em;">
-                    <span class="repo-stars"><strong>👥 0</strong> seguidores</span>
-                    <span style="color: var(--light-text);">👤 undefined</span>
+                    <span class="repo-stars"><strong><img src="https://cdn-icons-png.flaticon.com/128/681/681494.png" alt="Followers" style="width: 14px; height: 14px; vertical-align: middle;"> 8032</strong> seguidores</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/1077/1077114.png" alt="User" style="width: 14px; height: 14px; vertical-align: middle;"> User</span>
                 </div>
             </div>
             <div class="repo-item">
                 <div class="repo-header">
-                    <img src="undefined" alt="undefined" style="width: 40px; height: 40px; border-radius: 50%; margin-right: 10px;">
-                    <a href="undefined" target="_blank" class="repo-name">undefined</a>
+                    <img src="https://avatars.githubusercontent.com/u/61896274?v=4" alt="Fernanda-Kipper" style="width: 40px; height: 40px; border-radius: 50%; margin-right: 10px;">
+                    <a href="https://github.com/Fernanda-Kipper" target="_blank" class="repo-name">Fernanda-Kipper</a>
                 </div>
-                <div class="repo-description">Sem bio</div>
+                <div class="repo-description">Software Enginner passionate about web development. Cofounder @useporabr</div>
                 <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85em;">
-                    <span class="repo-stars"><strong>👥 0</strong> seguidores</span>
-                    <span style="color: var(--light-text);">👤 undefined</span>
+                    <span class="repo-stars"><strong><img src="https://cdn-icons-png.flaticon.com/128/681/681494.png" alt="Followers" style="width: 14px; height: 14px; vertical-align: middle;"> 8011</strong> seguidores</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/1077/1077114.png" alt="User" style="width: 14px; height: 14px; vertical-align: middle;"> User</span>
                 </div>
             </div>
             <div class="repo-item">
                 <div class="repo-header">
-                    <img src="undefined" alt="undefined" style="width: 40px; height: 40px; border-radius: 50%; margin-right: 10px;">
-                    <a href="undefined" target="_blank" class="repo-name">undefined</a>
+                    <img src="https://avatars.githubusercontent.com/u/3603793?v=4" alt="felipefialho" style="width: 40px; height: 40px; border-radius: 50%; margin-right: 10px;">
+                    <a href="https://github.com/felipefialho" target="_blank" class="repo-name">felipefialho</a>
                 </div>
-                <div class="repo-description">Sem bio</div>
+                <div class="repo-description">Tech Lead at @juntossomosmais and Founder of @frontendbr. Mainly working with JavaScript, TypeScript and CSS - Tech is 💙</div>
                 <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85em;">
-                    <span class="repo-stars"><strong>👥 0</strong> seguidores</span>
-                    <span style="color: var(--light-text);">👤 undefined</span>
+                    <span class="repo-stars"><strong><img src="https://cdn-icons-png.flaticon.com/128/681/681494.png" alt="Followers" style="width: 14px; height: 14px; vertical-align: middle;"> 7768</strong> seguidores</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/1077/1077114.png" alt="User" style="width: 14px; height: 14px; vertical-align: middle;"> User</span>
                 </div>
             </div>
             <div class="repo-item">
                 <div class="repo-header">
-                    <img src="undefined" alt="undefined" style="width: 40px; height: 40px; border-radius: 50%; margin-right: 10px;">
-                    <a href="undefined" target="_blank" class="repo-name">undefined</a>
+                    <img src="https://avatars.githubusercontent.com/u/7491283?v=4" alt="rodrigobranas" style="width: 40px; height: 40px; border-radius: 50%; margin-right: 10px;">
+                    <a href="https://github.com/rodrigobranas" target="_blank" class="repo-name">rodrigobranas</a>
                 </div>
-                <div class="repo-description">Sem bio</div>
+                <div class="repo-description">Software Architect, Professor, Author and Speaker</div>
                 <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85em;">
-                    <span class="repo-stars"><strong>👥 0</strong> seguidores</span>
-                    <span style="color: var(--light-text);">👤 undefined</span>
+                    <span class="repo-stars"><strong><img src="https://cdn-icons-png.flaticon.com/128/681/681494.png" alt="Followers" style="width: 14px; height: 14px; vertical-align: middle;"> 6818</strong> seguidores</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/1077/1077114.png" alt="User" style="width: 14px; height: 14px; vertical-align: middle;"> User</span>
                 </div>
             </div>
             <div class="repo-item">
                 <div class="repo-header">
-                    <img src="undefined" alt="undefined" style="width: 40px; height: 40px; border-radius: 50%; margin-right: 10px;">
-                    <a href="undefined" target="_blank" class="repo-name">undefined</a>
+                    <img src="https://avatars.githubusercontent.com/u/31996?v=4" alt="avelino" style="width: 40px; height: 40px; border-radius: 50%; margin-right: 10px;">
+                    <a href="https://github.com/avelino" target="_blank" class="repo-name">avelino</a>
                 </div>
-                <div class="repo-description">Sem bio</div>
+                <div class="repo-description">CTO at @buserbrasil, open source engineer</div>
                 <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85em;">
-                    <span class="repo-stars"><strong>👥 0</strong> seguidores</span>
-                    <span style="color: var(--light-text);">👤 undefined</span>
+                    <span class="repo-stars"><strong><img src="https://cdn-icons-png.flaticon.com/128/681/681494.png" alt="Followers" style="width: 14px; height: 14px; vertical-align: middle;"> 6082</strong> seguidores</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/1077/1077114.png" alt="User" style="width: 14px; height: 14px; vertical-align: middle;"> User</span>
                 </div>
             </div>
             <div class="repo-item">
                 <div class="repo-header">
-                    <img src="undefined" alt="undefined" style="width: 40px; height: 40px; border-radius: 50%; margin-right: 10px;">
-                    <a href="undefined" target="_blank" class="repo-name">undefined</a>
+                    <img src="https://avatars.githubusercontent.com/u/730492?v=4" alt="falvojr" style="width: 40px; height: 40px; border-radius: 50%; margin-right: 10px;">
+                    <a href="https://github.com/falvojr" target="_blank" class="repo-name">falvojr</a>
                 </div>
-                <div class="repo-description">Sem bio</div>
+                <div class="repo-description">Doutorando no ICMC-USP, onde contribui junto ao CAEd. Atualmente é Tech Lead na DIO (dio.me), uma edtech que visa democratizar o ensino e capacitação em TI.</div>
                 <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85em;">
-                    <span class="repo-stars"><strong>👥 0</strong> seguidores</span>
-                    <span style="color: var(--light-text);">👤 undefined</span>
+                    <span class="repo-stars"><strong><img src="https://cdn-icons-png.flaticon.com/128/681/681494.png" alt="Followers" style="width: 14px; height: 14px; vertical-align: middle;"> 6064</strong> seguidores</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/1077/1077114.png" alt="User" style="width: 14px; height: 14px; vertical-align: middle;"> User</span>
                 </div>
             </div>
             <div class="repo-item">
                 <div class="repo-header">
-                    <img src="undefined" alt="undefined" style="width: 40px; height: 40px; border-radius: 50%; margin-right: 10px;">
-                    <a href="undefined" target="_blank" class="repo-name">undefined</a>
+                    <img src="https://avatars.githubusercontent.com/u/86568132?v=4" alt="Universidade-Livre" style="width: 40px; height: 40px; border-radius: 50%; margin-right: 10px;">
+                    <a href="https://github.com/Universidade-Livre" target="_blank" class="repo-name">Universidade-Livre</a>
                 </div>
                 <div class="repo-description">Sem bio</div>
                 <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85em;">
-                    <span class="repo-stars"><strong>👥 0</strong> seguidores</span>
-                    <span style="color: var(--light-text);">👤 undefined</span>
+                    <span class="repo-stars"><strong><img src="https://cdn-icons-png.flaticon.com/128/681/681494.png" alt="Followers" style="width: 14px; height: 14px; vertical-align: middle;"> 5576</strong> seguidores</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/1077/1077114.png" alt="User" style="width: 14px; height: 14px; vertical-align: middle;"> Organization</span>
                 </div>
             </div>
             <div class="repo-item">
                 <div class="repo-header">
-                    <img src="undefined" alt="undefined" style="width: 40px; height: 40px; border-radius: 50%; margin-right: 10px;">
-                    <a href="undefined" target="_blank" class="repo-name">undefined</a>
+                    <img src="https://avatars.githubusercontent.com/u/16963863?v=4" alt="frontendbr" style="width: 40px; height: 40px; border-radius: 50%; margin-right: 10px;">
+                    <a href="https://github.com/frontendbr" target="_blank" class="repo-name">frontendbr</a>
                 </div>
-                <div class="repo-description">Sem bio</div>
+                <div class="repo-description">Maior comunidade front-end do Brasil</div>
                 <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85em;">
-                    <span class="repo-stars"><strong>👥 0</strong> seguidores</span>
-                    <span style="color: var(--light-text);">👤 undefined</span>
+                    <span class="repo-stars"><strong><img src="https://cdn-icons-png.flaticon.com/128/681/681494.png" alt="Followers" style="width: 14px; height: 14px; vertical-align: middle;"> 5539</strong> seguidores</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/1077/1077114.png" alt="User" style="width: 14px; height: 14px; vertical-align: middle;"> Organization</span>
                 </div>
             </div>
             <div class="repo-item">
                 <div class="repo-header">
-                    <img src="undefined" alt="undefined" style="width: 40px; height: 40px; border-radius: 50%; margin-right: 10px;">
-                    <a href="undefined" target="_blank" class="repo-name">undefined</a>
+                    <img src="https://avatars.githubusercontent.com/u/411493?v=4" alt="jeffersongoncalves" style="width: 40px; height: 40px; border-radius: 50%; margin-right: 10px;">
+                    <a href="https://github.com/jeffersongoncalves" target="_blank" class="repo-name">jeffersongoncalves</a>
                 </div>
-                <div class="repo-description">Sem bio</div>
+                <div class="repo-description">Full Stack PHP Developer | Filament | Laravel | Livewire | Alpine.js | Tailwind CSS</div>
                 <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85em;">
-                    <span class="repo-stars"><strong>👥 0</strong> seguidores</span>
-                    <span style="color: var(--light-text);">👤 undefined</span>
+                    <span class="repo-stars"><strong><img src="https://cdn-icons-png.flaticon.com/128/681/681494.png" alt="Followers" style="width: 14px; height: 14px; vertical-align: middle;"> 5340</strong> seguidores</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/1077/1077114.png" alt="User" style="width: 14px; height: 14px; vertical-align: middle;"> User</span>
                 </div>
             </div>
             <div class="repo-item">
                 <div class="repo-header">
-                    <img src="undefined" alt="undefined" style="width: 40px; height: 40px; border-radius: 50%; margin-right: 10px;">
-                    <a href="undefined" target="_blank" class="repo-name">undefined</a>
+                    <img src="https://avatars.githubusercontent.com/u/37452836?v=4" alt="felipeAguiarCode" style="width: 40px; height: 40px; border-radius: 50%; margin-right: 10px;">
+                    <a href="https://github.com/felipeAguiarCode" target="_blank" class="repo-name">felipeAguiarCode</a>
                 </div>
-                <div class="repo-description">Sem bio</div>
+                <div class="repo-description">Software Consultant developer 
+🚀 10 Anos desenvolvendo aplicações Web
+
+#javascript #typescript #nodejs #angular #react #dotnet #asp.net </div>
                 <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85em;">
-                    <span class="repo-stars"><strong>👥 0</strong> seguidores</span>
-                    <span style="color: var(--light-text);">👤 undefined</span>
+                    <span class="repo-stars"><strong><img src="https://cdn-icons-png.flaticon.com/128/681/681494.png" alt="Followers" style="width: 14px; height: 14px; vertical-align: middle;"> 5325</strong> seguidores</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/1077/1077114.png" alt="User" style="width: 14px; height: 14px; vertical-align: middle;"> User</span>
                 </div>
             </div>
             <div class="repo-item">
                 <div class="repo-header">
-                    <img src="undefined" alt="undefined" style="width: 40px; height: 40px; border-radius: 50%; margin-right: 10px;">
-                    <a href="undefined" target="_blank" class="repo-name">undefined</a>
+                    <img src="https://avatars.githubusercontent.com/u/58452540?v=4" alt="oluiscabral" style="width: 40px; height: 40px; border-radius: 50%; margin-right: 10px;">
+                    <a href="https://github.com/oluiscabral" target="_blank" class="repo-name">oluiscabral</a>
                 </div>
-                <div class="repo-description">Sem bio</div>
+                <div class="repo-description">Full‑stack dev & educator. Creator of Studorama (3.7k users/24h). Rust, Python, JS/TS, Kotlin, Java. Remote.</div>
                 <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85em;">
-                    <span class="repo-stars"><strong>👥 0</strong> seguidores</span>
-                    <span style="color: var(--light-text);">👤 undefined</span>
+                    <span class="repo-stars"><strong><img src="https://cdn-icons-png.flaticon.com/128/681/681494.png" alt="Followers" style="width: 14px; height: 14px; vertical-align: middle;"> 5291</strong> seguidores</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/1077/1077114.png" alt="User" style="width: 14px; height: 14px; vertical-align: middle;"> User</span>
                 </div>
             </div>
             <div class="repo-item">
                 <div class="repo-header">
-                    <img src="undefined" alt="undefined" style="width: 40px; height: 40px; border-radius: 50%; margin-right: 10px;">
-                    <a href="undefined" target="_blank" class="repo-name">undefined</a>
+                    <img src="https://avatars.githubusercontent.com/u/13090166?v=4" alt="VictorTaelin" style="width: 40px; height: 40px; border-radius: 50%; margin-right: 10px;">
+                    <a href="https://github.com/VictorTaelin" target="_blank" class="repo-name">VictorTaelin</a>
                 </div>
-                <div class="repo-description">Sem bio</div>
+                <div class="repo-description">Functional-programming enthusiast, author of Kind and HVM.</div>
                 <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85em;">
-                    <span class="repo-stars"><strong>👥 0</strong> seguidores</span>
-                    <span style="color: var(--light-text);">👤 undefined</span>
+                    <span class="repo-stars"><strong><img src="https://cdn-icons-png.flaticon.com/128/681/681494.png" alt="Followers" style="width: 14px; height: 14px; vertical-align: middle;"> 5237</strong> seguidores</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/1077/1077114.png" alt="User" style="width: 14px; height: 14px; vertical-align: middle;"> User</span>
                 </div>
             </div>
             </div>
@@ -1193,6 +1082,30 @@
     </div>
 
     <script language="javascript">
+        // Inicializar tema ao carregar página
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            if (savedTheme === 'light') {
+                document.documentElement.setAttribute('data-theme', 'light');
+                document.getElementById('theme-icon').src = 'https://cdn-icons-png.flaticon.com/128/3688/3688596.png';
+            }
+        });
+
+        function toggleTheme() {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            const icon = document.getElementById('theme-icon');
+            
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            
+            if (newTheme === 'light') {
+                icon.src = 'https://cdn-icons-png.flaticon.com/128/3688/3688596.png';
+            } else {
+                icon.src = 'https://cdn-icons-png.flaticon.com/128/3688/3688612.png';
+            }
+        }
+
         function trendingTab() {
             switchTab('trending');
         }
@@ -1215,7 +1128,7 @@
             document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
             
             // Add active class to clicked tab and corresponding content
-            event.target.classList.add('active');
+            event.target.closest('.tab').classList.add('active');
             document.getElementById(tabName).classList.add('active');
         }
     </script>

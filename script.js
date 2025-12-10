@@ -41,8 +41,7 @@ async function buscarRepositoriosPopulares() {
                             nome: repo.name,
                             nomeCompleto: repo.full_name,
                             url: repo.html_url,
-                            descricao:  'Sem descrição',
-                            // descricao: repo.description || 'Sem descrição',
+                            descricao: repo.description || 'Sem descrição',
                             linguagem: repo.language || 'N/A',
                             stars: repo.stargazers_count.toLocaleString('pt-BR'),
                             forks: repo.forks_count.toLocaleString('pt-BR'),
@@ -177,8 +176,8 @@ async function buscarDesenvolvedoresBrasileiros() {
                     headers: {
                         'User-Agent': 'Node.js-GitHub-Trending-Script',
                         'Accept': 'application/vnd.github.v3+json'
-                    }
-                };
+                        }
+                    };
 
                 https.get(options, (res) => {
                     let data = '';
@@ -198,7 +197,7 @@ async function buscarDesenvolvedoresBrasileiros() {
                     reject(err);
                 });
             });
-            
+
             devs.push({
                 login: details.login,
                 nome: details.name || details.login,
@@ -282,45 +281,45 @@ function gerarHTML(reposTrending, reposBrasileiros, reposEmAltaBrasil, devsBrasi
     const trendingItems = reposTrending.map((repo, index) => `
             <div class="repo-item">
                 <div class="repo-header">
-                    <span class="repo-icon">📦</span>
+                    <img src="https://cdn-icons-png.flaticon.com/128/685/685388.png " alt="Repository" style="width: 20px; height: 20px; opacity: 0.8;">
                     <a href="${repo.url}" target="_blank" class="repo-name">${repo.nomeCompleto}</a>
                 </div>
                 <div class="repo-description">${repo.descricao}</div>
                 <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85em;">
-                    <span class="repo-stars"><strong>⭐ ${repo.stars}</strong> stars</span>
-                    <span style="color: var(--light-text);">🍴 ${repo.forks} forks</span>
-                    <span style="color: var(--light-text);">💻 ${repo.linguagem}</span>
-                    <span style="color: var(--light-text);">📅 ${repo.criadoEm}</span>
+                    <span class="repo-stars"><strong><img src="https://cdn-icons-png.flaticon.com/128/1828/1828884.png" alt="Star" style="width: 14px; height: 14px; vertical-align: middle;"> ${repo.stars}</strong> stars</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/2874/2874791.png" alt="Fork" style="width: 14px; height: 14px; vertical-align: middle;"> ${repo.forks} forks</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/1005/1005141.png" alt="Code" style="width: 14px; height: 14px; vertical-align: middle;"> ${repo.linguagem}</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/747/747310.png" alt="Calendar" style="width: 14px; height: 14px; vertical-align: middle;"> ${repo.criadoEm}</span>
                 </div>
             </div>`).join('');
 
     const brasileirosItems = reposBrasileiros.map((repo, index) => `
             <div class="repo-item">
                 <div class="repo-header">
-                    <span class="repo-icon">🇧🇷</span>
+                    <img src="https://cdn-icons-png.flaticon.com/128/685/685388.png " alt="Repository" style="width: 20px; height: 20px; opacity: 0.8;">
                     <a href="${repo.url}" target="_blank" class="repo-name">${repo.nomeCompleto}</a>
                 </div>
                 <div class="repo-description">${repo.descricao}</div>
                 <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85em;">
-                    <span class="repo-stars"><strong>⭐ ${repo.stars}</strong> stars</span>
-                    <span style="color: var(--light-text);">🍴 ${repo.forks} forks</span>
-                    <span style="color: var(--light-text);">💻 ${repo.linguagem}</span>
-                    <span style="color: var(--light-text);">📅 ${repo.criadoEm}</span>
+                    <span class="repo-stars"><strong><img src="https://cdn-icons-png.flaticon.com/128/1828/1828884.png" alt="Star" style="width: 14px; height: 14px; vertical-align: middle;"> ${repo.stars}</strong> stars</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/2874/2874791.png" alt="Fork" style="width: 14px; height: 14px; vertical-align: middle;"> ${repo.forks} forks</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/1005/1005141.png" alt="Code" style="width: 14px; height: 14px; vertical-align: middle;"> ${repo.linguagem}</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/747/747310.png" alt="Calendar" style="width: 14px; height: 14px; vertical-align: middle;"> ${repo.criadoEm}</span>
                 </div>
             </div>`).join('');
 
     const emAltaBrasilItems = reposEmAltaBrasil.map((repo, index) => `
             <div class="repo-item">
                 <div class="repo-header">
-                    <span class="repo-icon">🚀</span>
+                    <img src="https://cdn-icons-png.flaticon.com/128/685/685388.png " alt="Repository" style="width: 20px; height: 20px; opacity: 0.8;">
                     <a href="${repo.url}" target="_blank" class="repo-name">${repo.nomeCompleto}</a>
                 </div>
                 <div class="repo-description">${repo.descricao}</div>
                 <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85em;">
-                    <span class="repo-stars"><strong>⭐ ${repo.stars}</strong> stars</span>
-                    <span style="color: var(--light-text);">🍴 ${repo.forks} forks</span>
-                    <span style="color: var(--light-text);">💻 ${repo.linguagem}</span>
-                    <span style="color: var(--light-text);">📅 ${repo.criadoEm}</span>
+                    <span class="repo-stars"><strong><img src="https://cdn-icons-png.flaticon.com/128/1828/1828884.png" alt="Star" style="width: 14px; height: 14px; vertical-align: middle;"> ${repo.stars}</strong> stars</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/2874/2874791.png" alt="Fork" style="width: 14px; height: 14px; vertical-align: middle;"> ${repo.forks} forks</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/1005/1005141.png" alt="Code" style="width: 14px; height: 14px; vertical-align: middle;"> ${repo.linguagem}</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/747/747310.png" alt="Calendar" style="width: 14px; height: 14px; vertical-align: middle;"> ${repo.criadoEm}</span>
                 </div>
             </div>`).join('');
 
@@ -332,8 +331,8 @@ function gerarHTML(reposTrending, reposBrasileiros, reposEmAltaBrasil, devsBrasi
                 </div>
                 <div class="repo-description">${dev.bio}</div>
                 <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85em;">
-                    <span class="repo-stars"><strong>👥 ${dev.seguidores}</strong> seguidores</span>
-                    <span style="color: var(--light-text);">👤 ${dev.tipo}</span>
+                    <span class="repo-stars"><strong><img src="https://cdn-icons-png.flaticon.com/128/681/681494.png" alt="Followers" style="width: 14px; height: 14px; vertical-align: middle;"> ${dev.seguidores}</strong> seguidores</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/1077/1077114.png" alt="User" style="width: 14px; height: 14px; vertical-align: middle;"> ${dev.tipo}</span>
                 </div>
             </div>`).join('');
 
@@ -342,194 +341,78 @@ function gerarHTML(reposTrending, reposBrasileiros, reposEmAltaBrasil, devsBrasi
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🔥 Repositórios GitHub — Trending & Brasil</title>
-    <style>
-        :root {
-            --primary-color: #2c3e50;
-            --secondary-color: #3498db;
-            --star-color: #f1c40f;
-            --text-color: #ecf0f1;
-            --light-text: #bdc3c7;
-            --background-dark: #34495e;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--background-dark);
-            color: var(--text-color);
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-        }
-
-        .infographic-container {
-            width: 100%;
-            max-width: 650px;
-            background-color: var(--primary-color);
-            border-radius: 12px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
-            padding: 30px;
-        }
-
-        .header {
-            text-align: center;
-            border-bottom: 3px solid var(--secondary-color);
-            padding-bottom: 15px;
-            margin-bottom: 25px;
-        }
-
-        .header h1 {
-            color: var(--text-color);
-            font-size: 1.8em;
-            margin: 0;
-        }
-
-        .header p {
-            color: var(--light-text);
-            font-size: 0.9em;
-            margin-top: 5px;
-        }
-
-        .repo-item {
-            background-color: var(--background-dark);
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 15px;
-            transition: transform 0.2s, box-shadow 0.2s;
-            border-left: 5px solid var(--secondary-color);
-        }
-        
-        .repo-item:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
-        }
-
-        .repo-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 8px;
-        }
-
-        .repo-icon {
-            font-size: 1.5em;
-            margin-right: 10px;
-        }
-
-        .repo-name {
-            font-weight: bold;
-            font-size: 1.1em;
-            color: var(--secondary-color);
-            text-decoration: none;
-        }
-
-        .repo-name:hover {
-            text-decoration: underline;
-        }
-
-        .repo-stars strong {
-            color: var(--star-color);
-            font-size: 1.1em;
-        }
-
-        .repo-description {
-            font-size: 0.9em;
-            color: var(--light-text);
-            margin-top: 5px;
-        }
-
-        .footer {
-            text-align: center;
-            padding-top: 20px;
-            font-size: 0.8em;
-            color: var(--light-text);
-        }
-
-        .update-info {
-            text-align: center;
-            color: var(--star-color);
-            font-size: 0.85em;
-            margin-bottom: 15px;
-        }
-
-        .tabs {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-            border-bottom: 2px solid var(--background-dark);
-        }
-
-        .tab {
-            padding: 12px 24px;
-            background: transparent;
-            border: none;
-            color: var(--light-text);
-            cursor: pointer;
-            font-size: 1em;
-            font-weight: 500;
-            border-bottom: 3px solid transparent;
-            transition: all 0.3s;
-        }
-
-        .tab:hover {
-            color: var(--text-color);
-        }
-
-        .tab.active {
-            color: var(--secondary-color);
-            border-bottom-color: var(--secondary-color);
-        }
-
-        .tab-content {
-            display: none;
-        }
-
-        .tab-content.active {
-            display: block;
-        }
-    </style>
+    <title>Repositórios GitHub — Trending & Brasil</title>
+    <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
     <div class="infographic-container">
         <div class="header">
-            <h1>🔥 Repositórios GitHub</h1>
+            <button class="theme-toggle" onclick="toggleTheme()" aria-label="Alternar tema">
+                <img id="theme-icon" src="https://cdn-icons-png.flaticon.com/128/3688/3688612.png" alt="Theme">
+            </button>
+            <h1>Repositórios GitHub</h1>
             <p>Os projetos open-source mais populares e inovadores.</p>
         </div>
 
         <div class="update-info">
-            ⏱️ Última atualização: ${new Date().toLocaleString('pt-BR')}
+            <img src="https://cdn-icons-png.flaticon.com/128/2838/2838779.png" alt="Clock" style="width: 16px; height: 16px; vertical-align: middle; margin-right: 6px;">
+            Última atualização: ${new Date().toLocaleString('pt-BR')}
         </div>
 
         <div class="tabs">
-            <button class="tab active" onClick="trendingTab()">📈 Em Alta</button>
-            <button class="tab" onClick="emAltaBrasilTab()">🚀 Em Alta BR</button>
-            <button class="tab" onClick="brTab()">🇧🇷 Repos Brasil</button>
-            <button class="tab" onClick="devsTab()">👥 Devs Brasil</button>
+            <button class="tab active" onClick="trendingTab()">
+                <img src="https://cdn-icons-png.flaticon.com/128/2991/2991148.png" alt="Trending" style="width: 16px; height: 16px; vertical-align: middle; margin-right: 4px;">
+                Em alta
+            </button>
+            <button class="tab" onClick="emAltaBrasilTab()">
+                <img src="https://cdn-icons-png.flaticon.com/128/3588/3588592.png" alt="Rocket" style="width: 16px; height: 16px; vertical-align: middle; margin-right: 4px;">
+                Em alta BR
+            </button>
+            <button class="tab" onClick="brTab()">
+                <img src="https://cdn-icons-png.flaticon.com/128/197/197386.png" alt="Brazil" style="width: 16px; height: 16px; vertical-align: middle; margin-right: 4px;">
+                Repos Brasil
+            </button>
+            <button class="tab" onClick="devsTab()">
+                <img src="https://cdn-icons-png.flaticon.com/128/681/681494.png" alt="Users" style="width: 16px; height: 16px; vertical-align: middle; margin-right: 4px;">
+                Devs Brasil
+            </button>
         </div>
 
         <div id="trending" class="tab-content active">
-            <h3 style="color: var(--secondary-color); margin-bottom: 15px;">Repositórios em Alta — Última Semana</h3>
+            <h3>
+                <img src="https://cdn-icons-png.flaticon.com/128/2991/2991148.png" alt="Trending" style="width: 24px; height: 24px; vertical-align: middle; margin-right: 8px;">
+                Repositórios em Alta — Última Semana
+            </h3>
             <div class="repo-list">
 ${trendingItems}
             </div>
         </div>
 
         <div id="emaltabrasil" class="tab-content">
-            <h3 style="color: var(--secondary-color); margin-bottom: 15px;">🚀 Repositórios em Alta no Brasil — Última Semana</h3>
+            <h3>
+                <img src="https://cdn-icons-png.flaticon.com/128/3588/3588592.png" alt="Rocket" style="width: 24px; height: 24px; vertical-align: middle; margin-right: 8px;">
+                Repositórios em Alta no Brasil — Última Semana
+            </h3>
             <div class="repo-list">
 ${emAltaBrasilItems}
             </div>
         </div>
 
         <div id="brasil" class="tab-content">
-            <h3 style="color: var(--secondary-color); margin-bottom: 15px;">Top Repositórios de Desenvolvedores Brasileiros</h3>
+            <h3>
+                <img src="https://cdn-icons-png.flaticon.com/128/197/197386.png" alt="Brazil" style="width: 24px; height: 24px; vertical-align: middle; margin-right: 8px;">
+                Top Repositórios de Desenvolvedores Brasileiros
+            </h3>
             <div class="repo-list">
 ${brasileirosItems}
             </div>
         </div>
 
         <div id="devs" class="tab-content">
-            <h3 style="color: var(--secondary-color); margin-bottom: 15px;">👥 Top Desenvolvedores Brasileiros no GitHub</h3>
+            <h3>
+                <img src="https://cdn-icons-png.flaticon.com/128/681/681494.png" alt="Users" style="width: 24px; height: 24px; vertical-align: middle; margin-right: 8px;">
+                Top Desenvolvedores Brasileiros no GitHub
+            </h3>
             <div class="repo-list">
 ${desenvolvedoresItems}
             </div>
@@ -541,6 +424,30 @@ ${desenvolvedoresItems}
     </div>
 
     <script language="javascript">
+        // Inicializar tema ao carregar página
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            if (savedTheme === 'light') {
+                document.documentElement.setAttribute('data-theme', 'light');
+                document.getElementById('theme-icon').src = 'https://cdn-icons-png.flaticon.com/128/3688/3688596.png';
+            }
+        });
+
+        function toggleTheme() {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            const icon = document.getElementById('theme-icon');
+            
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            
+            if (newTheme === 'light') {
+                icon.src = 'https://cdn-icons-png.flaticon.com/128/3688/3688596.png';
+            } else {
+                icon.src = 'https://cdn-icons-png.flaticon.com/128/3688/3688612.png';
+            }
+        }
+
         function trendingTab() {
             switchTab('trending');
         }
@@ -563,7 +470,7 @@ ${desenvolvedoresItems}
             document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
             
             // Add active class to clicked tab and corresponding content
-            event.target.classList.add('active');
+            event.target.closest('.tab').classList.add('active');
             document.getElementById(tabName).classList.add('active');
         }
     </script>
@@ -578,19 +485,19 @@ async function main() {
         // Buscar repositórios trending
         console.log('📈 Buscando repositórios em evidência (últimos 7 dias)...');
         const reposTrending = await buscarRepositoriosPopulares();
-        await new Promise(resolve => setTimeout(resolve, 2000)); // Aguardar 1 segundo para evitar rate limit
+        await new Promise(resolve => setTimeout(resolve, 3000)); // Aguardar 1 segundo para evitar rate limit
         console.log(`✅ Encontrados ${reposTrending.length} repositórios trending\n`);
 
         // Buscar repositórios brasileiros
         console.log('🇧🇷 Buscando repositórios de desenvolvedores brasileiros...');
         const reposBrasileiros = await buscarRepositoriosBrasileiros();
-         await new Promise(resolve => setTimeout(resolve, 2000))
+         await new Promise(resolve => setTimeout(resolve, 3000))
         console.log(`✅ Encontrados ${reposBrasileiros.length} repositórios brasileiros\n`);
 
         // Buscar repositórios em alta no Brasil
-        console.log('🚀 Buscando repositórios em alta no Brasil (última semana)...');
+        console.log('🚀 Buscando repositórios em alta no Brasil (últimos 7 dias)...');
         const reposEmAltaBrasil = await buscarRepositoriosEmAltaBrasil();
-         await new Promise(resolve => setTimeout(resolve, 2000))
+         await new Promise(resolve => setTimeout(resolve, 3000))
         console.log(`✅ Encontrados ${reposEmAltaBrasil.length} repositórios em alta no Brasil\n`);
 
         // Buscar desenvolvedores brasileiros
