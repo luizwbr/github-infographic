@@ -278,6 +278,17 @@ async function buscarRepositoriosEmAltaBrasil() {
 }
 
 function gerarHTML(reposTrending, reposBrasileiros, reposEmAltaBrasil, devsBrasileiros) {
+    // Calcular data de 14 dias atrás para as URLs
+    const dataLimite = new Date();
+    dataLimite.setDate(dataLimite.getDate() - 14);
+    const dataFormatada = dataLimite.toISOString().split('T')[0];
+
+    // URLs para auditoria no GitHub
+    const trendingUrl = `https://github.com/search?q=created%3A%3E${dataFormatada}&type=repositories&s=stars&o=desc`;
+    const brasilUrl = 'https://github.com/search?q=topic%3ABrazil&type=repositories&s=stars&o=desc';
+    const emAltaBrasilUrl = `https://github.com/search?q=topic%3Abrasil+created%3A%3E${dataFormatada}&type=repositories&s=stars&o=desc`;
+    const devsBrasilUrl = 'https://github.com/search?q=location%3ABrazil&type=users&s=followers&o=desc';
+
     const trendingItems = reposTrending.map((repo, index) => `
             <div class="repo-item">
                 <div class="repo-header">
@@ -341,7 +352,7 @@ function gerarHTML(reposTrending, reposBrasileiros, reposEmAltaBrasil, devsBrasi
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Repositórios GitHub — Trending & Brasil</title>
+    <title>Estatísticas de Repositórios - GitHub</title>
     <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -350,7 +361,7 @@ function gerarHTML(reposTrending, reposBrasileiros, reposEmAltaBrasil, devsBrasi
             <button class="theme-toggle" onclick="toggleTheme()" aria-label="Alternar tema">
                 <img id="theme-icon" src="https://cdn-icons-png.flaticon.com/128/3688/3688612.png" alt="Theme">
             </button>
-            <h1>Repositórios GitHub</h1>
+            <h1>>Estatísticas de Repositórios - GitHub</h1>
             <p>Os projetos open-source mais populares e inovadores.</p>
         </div>
 
@@ -361,27 +372,32 @@ function gerarHTML(reposTrending, reposBrasileiros, reposEmAltaBrasil, devsBrasi
 
         <div class="tabs">
             <button class="tab active" onClick="trendingTab()">
-                <img src="https://cdn-icons-png.flaticon.com/128/2991/2991148.png" alt="Trending" style="width: 16px; height: 16px; vertical-align: middle; margin-right: 4px;">
-                Em alta
+                <img src="https://cdn-icons-png.flaticon.com/128/4721/4721571.png" alt="Trending" style="width: 16px; height: 16px; vertical-align: middle; margin-right: 4px;">
+                Em alta mundial
             </button>
             <button class="tab" onClick="emAltaBrasilTab()">
-                <img src="https://cdn-icons-png.flaticon.com/128/3588/3588592.png" alt="Rocket" style="width: 16px; height: 16px; vertical-align: middle; margin-right: 4px;">
+                <img src="https://cdn-icons-png.flaticon.com/128/4721/4721635.png" alt="Trending" style="width: 16px; height: 16px; vertical-align: middle; margin-right: 4px;">
                 Em alta BR
             </button>
             <button class="tab" onClick="brTab()">
-                <img src="https://cdn-icons-png.flaticon.com/128/197/197386.png" alt="Brazil" style="width: 16px; height: 16px; vertical-align: middle; margin-right: 4px;">
-                Repos Brasil
+                <img src="https://cdn-icons-png.flaticon.com/128/197/197386.png" alt="Top repositórios Brasil" style="width: 16px; height: 16px; vertical-align: middle; margin-right: 4px;">
+                Repos BR
             </button>
             <button class="tab" onClick="devsTab()">
-                <img src="https://cdn-icons-png.flaticon.com/128/681/681494.png" alt="Users" style="width: 16px; height: 16px; vertical-align: middle; margin-right: 4px;">
-                Devs Brasil
+                <img src="https://cdn-icons-png.flaticon.com/128/681/681494.png" alt="Top Devs Brasil" style="width: 16px; height: 16px; vertical-align: middle; margin-right: 4px;">
+                Ranking Devs BR
             </button>
         </div>
 
         <div id="trending" class="tab-content active">
-            <h3>
-                <img src="https://cdn-icons-png.flaticon.com/128/2991/2991148.png" alt="Trending" style="width: 24px; height: 24px; vertical-align: middle; margin-right: 8px;">
-                Repositórios em Alta — Última Semana
+            <h3 style="display: flex; align-items: center; justify-content: space-between;">
+                <span>
+                    <img src="https://cdn-icons-png.flaticon.com/128/4721/4721571.png" alt="Trending" style="width: 16px; height: 16px; vertical-align: middle; margin-right: 4px;">
+                    Repositórios em Alta - Última Semana
+                </span>
+                <a href="${trendingUrl}" target="_blank" title="Ver busca no GitHub" style="text-decoration: none; color: var(--text-secondary); font-size: 0.9em;">
+                    <img src="https://cdn-icons-png.flaticon.com/128/7268/7268615.png" alt="Link externo" style="width: 16px; height: 16px; vertical-align: middle; opacity: 0.7;">
+                </a>
             </h3>
             <div class="repo-list">
 ${trendingItems}
@@ -389,9 +405,14 @@ ${trendingItems}
         </div>
 
         <div id="emaltabrasil" class="tab-content">
-            <h3>
-                <img src="https://cdn-icons-png.flaticon.com/128/3588/3588592.png" alt="Rocket" style="width: 24px; height: 24px; vertical-align: middle; margin-right: 8px;">
-                Repositórios em Alta no Brasil — Última Semana
+            <h3 style="display: flex; align-items: center; justify-content: space-between;">
+                <span>
+                    <img src="https://cdn-icons-png.flaticon.com/128/4721/4721635.png" alt="Em alta repos BR" style="width: 16px; height: 16px; vertical-align: middle; margin-right: 4px;">
+                    Repositórios em Alta no Brasil - Última Semana
+                </span>
+                <a href="${emAltaBrasilUrl}" target="_blank" title="Ver busca no GitHub" style="text-decoration: none; color: var(--text-secondary); font-size: 0.9em;">
+                    <img src="https://cdn-icons-png.flaticon.com/128/7268/7268615.png" alt="Link externo" style="width: 16px; height: 16px; vertical-align: middle; opacity: 0.7;">
+                </a>
             </h3>
             <div class="repo-list">
 ${emAltaBrasilItems}
@@ -399,9 +420,14 @@ ${emAltaBrasilItems}
         </div>
 
         <div id="brasil" class="tab-content">
-            <h3>
-                <img src="https://cdn-icons-png.flaticon.com/128/197/197386.png" alt="Brazil" style="width: 24px; height: 24px; vertical-align: middle; margin-right: 8px;">
-                Top Repositórios de Desenvolvedores Brasileiros
+            <h3 style="display: flex; align-items: center; justify-content: space-between;">
+                <span>
+                    <img src="https://cdn-icons-png.flaticon.com/128/197/197386.png" alt="Brazil" style="width: 24px; height: 24px; vertical-align: middle; margin-right: 8px;">
+                    Top Repositórios de Desenvolvedores Brasileiros
+                </span>
+                <a href="${brasilUrl}" target="_blank" title="Ver busca no GitHub" style="text-decoration: none; color: var(--text-secondary); font-size: 0.9em;">
+                    <img src="https://cdn-icons-png.flaticon.com/128/7268/7268615.png" alt="Link externo" style="width: 16px; height: 16px; vertical-align: middle; opacity: 0.7;">
+                </a>
             </h3>
             <div class="repo-list">
 ${brasileirosItems}
@@ -409,9 +435,14 @@ ${brasileirosItems}
         </div>
 
         <div id="devs" class="tab-content">
-            <h3>
-                <img src="https://cdn-icons-png.flaticon.com/128/681/681494.png" alt="Users" style="width: 24px; height: 24px; vertical-align: middle; margin-right: 8px;">
-                Top Desenvolvedores Brasileiros no GitHub
+            <h3 style="display: flex; align-items: center; justify-content: space-between;">
+                <span>
+                    <img src="https://cdn-icons-png.flaticon.com/128/681/681494.png" alt="Users" style="width: 24px; height: 24px; vertical-align: middle; margin-right: 8px;">
+                    Ranking seguidores no Brasil
+                </span>
+                <a href="${devsBrasilUrl}" target="_blank" title="Ver busca no GitHub" style="text-decoration: none; color: var(--text-secondary); font-size: 0.9em;">
+                    <img src="https://cdn-icons-png.flaticon.com/128/7268/7268615.png" alt="Link externo" style="width: 16px; height: 16px; vertical-align: middle; opacity: 0.7;">
+                </a>
             </h3>
             <div class="repo-list">
 ${desenvolvedoresItems}
@@ -419,17 +450,19 @@ ${desenvolvedoresItems}
         </div>
 
         <div class="footer">
-            Dados: GitHub API • Gerado dinamicamente por Node.js
+            Dados fornecidos por <a href="https://docs.github.com/en/rest" target="_blank">GitHub API</a>. Desenvolvido por <a href="https://www.weber.eti.br" target="_blank">Luiz Weber</a>.
         </div>
     </div>
 
     <script language="javascript">
+        const LIGHT_URL_ICON = 'https://cdn-icons-png.flaticon.com/128/581/581601.png';
+        const DARK_URL_ICON = 'https://cdn-icons-png.flaticon.com/128/869/869869.png';
         // Inicializar tema ao carregar página
         document.addEventListener('DOMContentLoaded', function() {
             const savedTheme = localStorage.getItem('theme') || 'dark';
             if (savedTheme === 'light') {
                 document.documentElement.setAttribute('data-theme', 'light');
-                document.getElementById('theme-icon').src = 'https://cdn-icons-png.flaticon.com/128/3688/3688596.png';
+                document.getElementById('theme-icon').src = LIGHT_URL_ICON;
             }
         });
 
@@ -442,9 +475,9 @@ ${desenvolvedoresItems}
             localStorage.setItem('theme', newTheme);
             
             if (newTheme === 'light') {
-                icon.src = 'https://cdn-icons-png.flaticon.com/128/3688/3688596.png';
+                icon.src = LIGHT_URL_ICON;
             } else {
-                icon.src = 'https://cdn-icons-png.flaticon.com/128/3688/3688612.png';
+                icon.src = DARK_URL_ICON;
             }
         }
 
