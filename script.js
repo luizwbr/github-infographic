@@ -516,8 +516,6 @@ ${desenvolvedoresItems}
 
         gtag('config', 'G-XG24FJMJPP');
     </script>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5934933804861424"
-     crossorigin="anonymous"></script>
 </body>
 </html>`;
 }
