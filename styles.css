@@ -130,6 +130,20 @@ body {
     align-items: center;
     margin-bottom: 5px;
     gap: 5px;
+    flex-wrap: wrap;
+}
+
+.category-badge {
+    margin-left: auto;
+    font-size: 0.7em;
+    padding: 4px 10px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue));
+    color: #ffffff;
+    font-weight: 500;
+    white-space: nowrap;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    letter-spacing: 0.3px;
 }
 
 .repo-icon {
