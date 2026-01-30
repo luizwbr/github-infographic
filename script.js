@@ -460,7 +460,7 @@ function gerarHTML(reposTrending, reposBrasileiros, reposEmAltaBrasil, devsBrasi
             </button>
             <button class="tab" onClick="devsTab()">
                 <img src="https://cdn-icons-png.flaticon.com/128/681/681494.png" alt="Top Devs Brasil" style="width: 16px; height: 16px; vertical-align: middle; margin-right: 4px;">
-                Ranking Devs BR
+                Ranking Usuários BR
             </button>
             <button class="tab" onClick="statsTab()">
                 <img src="https://cdn-icons-png.flaticon.com/128/3426/3426653.png" alt="Stats" style="width: 16px; height: 16px; vertical-align: middle; margin-right: 4px;">
@@ -487,7 +487,7 @@ ${trendingItems}
             <h3 style="display: flex; align-items: center; justify-content: space-between;">
                 <span>
                     <img src="https://cdn-icons-png.flaticon.com/128/4721/4721635.png" alt="Em alta repos BR" style="width: 16px; height: 16px; vertical-align: middle; margin-right: 4px;">
-                    Repositórios em Alta no Brasil - Última Semana
+                    Repositórios em alta no Brasil
                 </span>
                 <a href="${emAltaBrasilUrl}" target="_blank" title="Ver busca no GitHub" class="link-externo">
                     <img src="https://cdn-icons-png.flaticon.com/128/7268/7268615.png" alt="Link externo" class="img-link-externo">
@@ -502,7 +502,7 @@ ${emAltaBrasilItems}
             <h3 style="display: flex; align-items: center; justify-content: space-between;">
                 <span>
                     <img src="https://cdn-icons-png.flaticon.com/128/197/197386.png" alt="Brazil" style="width: 24px; height: 24px; vertical-align: middle; margin-right: 8px;">
-                    Top Repositórios de Desenvolvedores Brasileiros
+                    Repositórios brasileiros com mais estrelas
                 </span>
                 <a href="${brasilUrl}" target="_blank" title="Ver busca no GitHub" class="link-externo">
                     <img src="https://cdn-icons-png.flaticon.com/128/7268/7268615.png" alt="Link externo" class="img-link-externo">
@@ -517,7 +517,7 @@ ${brasileirosItems}
             <h3 style="display: flex; align-items: center; justify-content: space-between;">
                 <span>
                     <img src="https://cdn-icons-png.flaticon.com/128/681/681494.png" alt="Users" style="width: 24px; height: 24px; vertical-align: middle; margin-right: 8px;">
-                    Ranking seguidores no Brasil
+                    Perfis brasileiros com mais seguidores
                 </span>
                 <a href="${devsBrasilUrl}" target="_blank" title="Ver busca no GitHub" class="link-externo">
                     <img src="https://cdn-icons-png.flaticon.com/128/7268/7268615.png" alt="Link externo" class="img-link-externo">
