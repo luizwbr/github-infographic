@@ -427,6 +427,32 @@ function gerarHTML(reposTrending, reposBrasileiros, reposEmAltaBrasil, devsBrasi
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Estatísticas de Repositórios - GitHub</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Dashboard interativo com estatísticas semanais do GitHub: repositórios em alta globalmente e no Brasil, desenvolvedores brasileiros mais influentes, análise de categorias e linguagens de programação.">
+    <meta name="keywords" content="GitHub, estatísticas, repositórios, desenvolvedores brasileiros, trending, programação, open source, Brasil, análise de dados, linguagens de programação">
+    <meta name="author" content="Luiz Weber">
+    <meta name="robots" content="index, follow">
+    <meta name="language" content="Portuguese">
+    <meta name="revisit-after" content="7 days">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Infográfico GitHub - Estatísticas Semanais">
+    <meta property="og:description" content="Descubra os repositórios mais populares do GitHub, desenvolvedores brasileiros em destaque e tendências de programação com dados atualizados semanalmente.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.weber.eti.br">
+    <meta property="og:image" content="https://cdn-icons-png.flaticon.com/512/733/733553.png">
+    <meta property="og:locale" content="pt_BR">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Infográfico GitHub - Estatísticas Semanais">
+    <meta name="twitter:description" content="Dashboard com dados semanais do GitHub: repos em alta, devs brasileiros e análise de tendências.">
+    <meta name="twitter:image" content="https://cdn-icons-png.flaticon.com/512/733/733553.png">
+    
+    <!-- Theme Color -->
+    <meta name="theme-color" content="#1e1e1e">
+    
     <link rel="stylesheet" href="styles.css" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 </head>
