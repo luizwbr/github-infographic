@@ -361,7 +361,7 @@ function gerarHTML(reposTrending, reposBrasileiros, reposEmAltaBrasil, devsBrasi
                     <span class="category-badge">${categoria}</span>
                 </div>
                 <div class="repo-description">${repo.descricao}</div>
-                <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85em;">
+                <div class="repo-bottom">
                     <span class="repo-stars"><strong><img src="https://cdn-icons-png.flaticon.com/128/1828/1828884.png" alt="Star" style="width: 14px; height: 14px; vertical-align: middle;"> ${repo.stars}</strong> stars</span>
                     <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/2874/2874791.png" alt="Fork" style="width: 14px; height: 14px; vertical-align: middle;"> ${repo.forks} forks</span>
                     <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/1005/1005141.png" alt="Code" style="width: 14px; height: 14px; vertical-align: middle;"> ${repo.linguagem}</span>
@@ -380,7 +380,7 @@ function gerarHTML(reposTrending, reposBrasileiros, reposEmAltaBrasil, devsBrasi
                     <span class="category-badge">${categoria}</span>
                 </div>
                 <div class="repo-description">${repo.descricao}</div>
-                <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85em;">
+                <div class="repo-bottom">
                     <span class="repo-stars"><strong><img src="https://cdn-icons-png.flaticon.com/128/1828/1828884.png" alt="Star" style="width: 14px; height: 14px; vertical-align: middle;"> ${repo.stars}</strong> stars</span>
                     <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/2874/2874791.png" alt="Fork" style="width: 14px; height: 14px; vertical-align: middle;"> ${repo.forks} forks</span>
                     <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/1005/1005141.png" alt="Code" style="width: 14px; height: 14px; vertical-align: middle;"> ${repo.linguagem}</span>
@@ -399,7 +399,7 @@ function gerarHTML(reposTrending, reposBrasileiros, reposEmAltaBrasil, devsBrasi
                     <span class="category-badge">${categoria}</span>
                 </div>
                 <div class="repo-description">${repo.descricao}</div>
-                <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85em;">
+                <div class="repo-bottom">
                     <span class="repo-stars"><strong><img src="https://cdn-icons-png.flaticon.com/128/1828/1828884.png" alt="Star" style="width: 14px; height: 14px; vertical-align: middle;"> ${repo.stars}</strong> stars</span>
                     <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/2874/2874791.png" alt="Fork" style="width: 14px; height: 14px; vertical-align: middle;"> ${repo.forks} forks</span>
                     <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/1005/1005141.png" alt="Code" style="width: 14px; height: 14px; vertical-align: middle;"> ${repo.linguagem}</span>
@@ -415,7 +415,7 @@ function gerarHTML(reposTrending, reposBrasileiros, reposEmAltaBrasil, devsBrasi
                     <a href="${dev.url}" target="_blank" class="repo-name">${dev.login}</a>
                 </div>
                 <div class="repo-description">${dev.bio}</div>
-                <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85em;">
+                <div class="repo-bottom">
                     <span class="repo-stars"><strong><img src="https://cdn-icons-png.flaticon.com/128/681/681494.png" alt="Followers" style="width: 14px; height: 14px; vertical-align: middle;"> ${dev.seguidores}</strong> seguidores</span>
                     <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/1077/1077114.png" alt="User" style="width: 14px; height: 14px; vertical-align: middle;"> ${dev.tipo}</span>
                 </div>
@@ -433,30 +433,30 @@ function gerarHTML(reposTrending, reposBrasileiros, reposEmAltaBrasil, devsBrasi
 <body>
     <div class="infographic-container">
         <div class="header">
+            <h1>Infográfico Github</h1>
+            <p>Dashboard com <b>dados semanais</b> extraídos da <b>API</b> do <b>Github</b></p>
             <button class="theme-toggle" onclick="toggleTheme()" aria-label="Alternar tema">
                 <img id="theme-icon" src="https://cdn-icons-png.flaticon.com/128/3688/3688612.png" alt="Theme">
             </button>
-            <h1>>Estatísticas de Repositórios - GitHub</h1>
-            <p>Os projetos open-source mais populares e inovadores.</p>
         </div>
 
         <div class="update-info">
             <img src="https://cdn-icons-png.flaticon.com/128/2838/2838779.png" alt="Clock" style="width: 16px; height: 16px; vertical-align: middle; margin-right: 6px;">
-            Última atualização: ${new Date().toLocaleString('pt-BR')}
+            Última atualização: <em>${new Date().toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' })} (horário de Brasília)</em>.
         </div>
 
         <div class="tabs">
             <button class="tab active" onClick="trendingTab()">
                 <img src="https://cdn-icons-png.flaticon.com/128/4721/4721571.png" alt="Trending" style="width: 16px; height: 16px; vertical-align: middle; margin-right: 4px;">
-                Em alta mundial
+                Em alta global
             </button>
             <button class="tab" onClick="emAltaBrasilTab()">
                 <img src="https://cdn-icons-png.flaticon.com/128/4721/4721635.png" alt="Trending" style="width: 16px; height: 16px; vertical-align: middle; margin-right: 4px;">
-                Em alta BR
+                Em alta no BR
             </button>
             <button class="tab" onClick="brTab()">
                 <img src="https://cdn-icons-png.flaticon.com/128/197/197386.png" alt="Top repositórios Brasil" style="width: 16px; height: 16px; vertical-align: middle; margin-right: 4px;">
-                Repos BR
+                Repos brazucas
             </button>
             <button class="tab" onClick="devsTab()">
                 <img src="https://cdn-icons-png.flaticon.com/128/681/681494.png" alt="Top Devs Brasil" style="width: 16px; height: 16px; vertical-align: middle; margin-right: 4px;">
@@ -464,7 +464,7 @@ function gerarHTML(reposTrending, reposBrasileiros, reposEmAltaBrasil, devsBrasi
             </button>
             <button class="tab" onClick="statsTab()">
                 <img src="https://cdn-icons-png.flaticon.com/128/3426/3426653.png" alt="Stats" style="width: 16px; height: 16px; vertical-align: middle; margin-right: 4px;">
-                Estatísticas
+                Estatísticas para nerds
             </button>
         </div>
 
@@ -472,10 +472,10 @@ function gerarHTML(reposTrending, reposBrasileiros, reposEmAltaBrasil, devsBrasi
             <h3 style="display: flex; align-items: center; justify-content: space-between;">
                 <span>
                     <img src="https://cdn-icons-png.flaticon.com/128/4721/4721571.png" alt="Trending" style="width: 16px; height: 16px; vertical-align: middle; margin-right: 4px;">
-                    Repositórios em Alta - Última Semana
+                    Repositórios em alta no mundo
                 </span>
-                <a href="${trendingUrl}" target="_blank" title="Ver busca no GitHub" style="text-decoration: none; color: var(--text-secondary); font-size: 0.9em;">
-                    <img src="https://cdn-icons-png.flaticon.com/128/7268/7268615.png" alt="Link externo" style="width: 16px; height: 16px; vertical-align: middle; opacity: 0.7;">
+                <a href="${trendingUrl}" target="_blank" title="Ver busca no GitHub" class="link-externo">
+                    <img src="https://cdn-icons-png.flaticon.com/128/7268/7268615.png" alt="Link externo" class="img-link-externo">
                 </a>
             </h3>
             <div class="repo-list">
@@ -489,8 +489,8 @@ ${trendingItems}
                     <img src="https://cdn-icons-png.flaticon.com/128/4721/4721635.png" alt="Em alta repos BR" style="width: 16px; height: 16px; vertical-align: middle; margin-right: 4px;">
                     Repositórios em Alta no Brasil - Última Semana
                 </span>
-                <a href="${emAltaBrasilUrl}" target="_blank" title="Ver busca no GitHub" style="text-decoration: none; color: var(--text-secondary); font-size: 0.9em;">
-                    <img src="https://cdn-icons-png.flaticon.com/128/7268/7268615.png" alt="Link externo" style="width: 16px; height: 16px; vertical-align: middle; opacity: 0.7;">
+                <a href="${emAltaBrasilUrl}" target="_blank" title="Ver busca no GitHub" class="link-externo">
+                    <img src="https://cdn-icons-png.flaticon.com/128/7268/7268615.png" alt="Link externo" class="img-link-externo">
                 </a>
             </h3>
             <div class="repo-list">
@@ -504,8 +504,8 @@ ${emAltaBrasilItems}
                     <img src="https://cdn-icons-png.flaticon.com/128/197/197386.png" alt="Brazil" style="width: 24px; height: 24px; vertical-align: middle; margin-right: 8px;">
                     Top Repositórios de Desenvolvedores Brasileiros
                 </span>
-                <a href="${brasilUrl}" target="_blank" title="Ver busca no GitHub" style="text-decoration: none; color: var(--text-secondary); font-size: 0.9em;">
-                    <img src="https://cdn-icons-png.flaticon.com/128/7268/7268615.png" alt="Link externo" style="width: 16px; height: 16px; vertical-align: middle; opacity: 0.7;">
+                <a href="${brasilUrl}" target="_blank" title="Ver busca no GitHub" class="link-externo">
+                    <img src="https://cdn-icons-png.flaticon.com/128/7268/7268615.png" alt="Link externo" class="img-link-externo">
                 </a>
             </h3>
             <div class="repo-list">
@@ -519,8 +519,8 @@ ${brasileirosItems}
                     <img src="https://cdn-icons-png.flaticon.com/128/681/681494.png" alt="Users" style="width: 24px; height: 24px; vertical-align: middle; margin-right: 8px;">
                     Ranking seguidores no Brasil
                 </span>
-                <a href="${devsBrasilUrl}" target="_blank" title="Ver busca no GitHub" style="text-decoration: none; color: var(--text-secondary); font-size: 0.9em;">
-                    <img src="https://cdn-icons-png.flaticon.com/128/7268/7268615.png" alt="Link externo" style="width: 16px; height: 16px; vertical-align: middle; opacity: 0.7;">
+                <a href="${devsBrasilUrl}" target="_blank" title="Ver busca no GitHub" class="link-externo">
+                    <img src="https://cdn-icons-png.flaticon.com/128/7268/7268615.png" alt="Link externo" class="img-link-externo">
                 </a>
             </h3>
             <div class="repo-list">
@@ -532,43 +532,43 @@ ${desenvolvedoresItems}
                 <img src="https://cdn-icons-png.flaticon.com/128/3426/3426653.png" alt="Statistics" style="width: 24px; height: 24px; vertical-align: middle; margin-right: 8px;">
                 Estatísticas dos Repositórios em Alta
             </h3>
-            <div style="padding: 20px;">
-                <div style="margin-bottom: 40px;">
-                    <h4 style="color: var(--text-primary); margin-bottom: 20px;">
+            <div class="stats-list">
+                <div class="stats-item">
+                    <h4>
                         <img src="https://cdn-icons-png.flaticon.com/128/7268/7268667.png" alt="Globe" style="width: 20px; height: 20px; vertical-align: middle; margin-right: 8px;">
                         Repositórios por País
                     </h4>
-                    <div style="max-width: 500px; margin: 0 auto;">
+                    <div class="stats-container">
                         <canvas id="reposByCountryChart"></canvas>
                     </div>
                 </div>
                 
-                <div style="margin-bottom: 40px;">
-                    <h4 style="color: var(--text-primary); margin-bottom: 20px;">
+                <div class="stats-item">
+                    <h4>
                         <img src="https://cdn-icons-png.flaticon.com/128/681/681494.png" alt="Developers" style="width: 20px; height: 20px; vertical-align: middle; margin-right: 8px;">
                         Desenvolvedores por País
                     </h4>
-                    <div style="max-width: 500px; margin: 0 auto;">
+                    <div class="stats-container">
                         <canvas id="devsByCountryChart"></canvas>
                     </div>
                 </div>
                 
-                <div style="margin-bottom: 40px;">
-                    <h4 style="color: var(--text-primary); margin-bottom: 20px;">
+                <div class="stats-item">
+                    <h4>
                         <img src="https://cdn-icons-png.flaticon.com/128/1998/1998087.png" alt="Categories" style="width: 20px; height: 20px; vertical-align: middle; margin-right: 8px;">
                         Repositórios por Categoria
                     </h4>
-                    <div style="max-width: 500px; margin: 0 auto;">
+                    <div class="stats-container">
                         <canvas id="reposByCategoryChart"></canvas>
                     </div>
                 </div>
                 
-                <div style="margin-bottom: 40px;">
-                    <h4 style="color: var(--text-primary); margin-bottom: 20px;">
+                <div class="stats-item">
+                    <h4>
                         <img src="https://cdn-icons-png.flaticon.com/128/1005/1005141.png" alt="Languages" style="width: 20px; height: 20px; vertical-align: middle; margin-right: 8px;">
                         Repositórios por Linguagem de Programação
                     </h4>
-                    <div style="max-width: 500px; margin: 0 auto;">
+                    <div class="stats-container">
                         <canvas id="reposByLanguageChart"></canvas>
                     </div>
                 </div>
