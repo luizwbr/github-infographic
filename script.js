@@ -42,7 +42,7 @@ async function buscarRepositoriosPopulares() {
                             nomeCompleto: repo.full_name,
                             url: repo.html_url,
                             descricao: repo.description || 'Sem descrição',
-                            linguagem: repo.language || 'N/A',
+                            linguagem: repo.language || 'Não informada',
                             stars: repo.stargazers_count.toLocaleString('pt-BR'),
                             forks: repo.forks_count.toLocaleString('pt-BR'),
                             watchers: repo.watchers_count.toLocaleString('pt-BR'),
@@ -99,7 +99,7 @@ async function buscarRepositoriosBrasileiros() {
                             url: repo.html_url,
                             descricao: repo.description || 'Sem descrição',
                             // descricao: 'Sem descrição',
-                            linguagem: repo.language || 'N/A',
+                            linguagem: repo.language || 'Não informada',
                             stars: repo.stargazers_count.toLocaleString('pt-BR'),
                             forks: repo.forks_count.toLocaleString('pt-BR'),
                             watchers: repo.watchers_count.toLocaleString('pt-BR'),
@@ -205,7 +205,7 @@ async function buscarDesenvolvedoresBrasileiros() {
                 avatar: details.avatar_url,
                 bio: details.bio || 'Sem bio',
                 seguidores: details.followers || 0,
-                tipo: details.type
+                tipo: details.type === 'Organization' ? 'Organização' : 'Usuário'
             });
         } catch (error) {
             console.error(`Erro ao buscar detalhes de ${user.login}:`, error.message);
@@ -256,7 +256,7 @@ async function buscarRepositoriosEmAltaBrasil() {
                             url: repo.html_url,
                             descricao: repo.description || 'Sem descrição',
                             // descricao: 'Sem descrição',
-                            linguagem: repo.language || 'N/A',
+                            linguagem: repo.language || 'Não informada',
                             stars: repo.stargazers_count.toLocaleString('pt-BR'),
                             forks: repo.forks_count.toLocaleString('pt-BR'),
                             watchers: repo.watchers_count.toLocaleString('pt-BR'),
@@ -339,7 +339,143 @@ function detectarCategoria(nomeCompleto, descricao, linguagem) {
     return 'Programação Geral';
 }
 
+function traduzirLoteDeepL(textos, chave) {
+    return new Promise((resolve, reject) => {
+        const corpo = JSON.stringify({ text: textos, target_lang: 'PT-BR' });
+        const options = {
+            hostname: chave.endsWith(':fx') ? 'api-free.deepl.com' : 'api.deepl.com',
+            path: '/v2/translate',
+            method: 'POST',
+            headers: {
+                Authorization: `DeepL-Auth-Key ${chave}`,
+                'Content-Type': 'application/json',
+                'Content-Length': Buffer.byteLength(corpo)
+            }
+        };
+
+        const request = https.request(options, (response) => {
+            let data = '';
+            response.setEncoding('utf8');
+            response.on('data', (chunk) => { data += chunk; });
+            response.on('end', () => {
+                if (response.statusCode < 200 || response.statusCode >= 300) {
+                    reject(new Error(`DeepL respondeu com HTTP ${response.statusCode}.`));
+                    return;
+                }
+
+                try {
+                    const result = JSON.parse(data);
+                    const traducoes = result.translations?.map((item) => item.text);
+                    if (!traducoes || traducoes.length !== textos.length || traducoes.some((texto) => !texto?.trim())) {
+                        throw new Error('A resposta do DeepL não contém todas as traduções.');
+                    }
+                    resolve(traducoes);
+                } catch (error) {
+                    reject(error);
+                }
+            });
+        });
+
+        request.setTimeout(30000, () => request.destroy(new Error('Tempo esgotado ao traduzir com DeepL.')));
+        request.on('error', reject);
+        request.end(corpo);
+    });
+}
+
+async function traduzirConteudosPtBr(reposTrending, reposBrasileiros, reposEmAltaBrasil, devsBrasileiros) {
+    const chave = process.env.DEEPL_AUTH_KEY;
+    if (!chave) {
+        throw new Error('DEEPL_AUTH_KEY é obrigatória. O HTML não será gerado sem a tradução para pt-BR.');
+    }
+
+    const campos = [
+        ...[...reposTrending, ...reposBrasileiros, ...reposEmAltaBrasil].map((item) => [item, 'descricao']),
+        ...devsBrasileiros.map((item) => [item, 'bio'])
+    ].filter(([item, campo]) => {
+        const texto = item[campo]?.trim();
+        return texto && texto !== 'Sem descrição' && texto !== 'Sem bio';
+    });
+    const textosUnicos = [...new Set(campos.map(([item, campo]) => item[campo].trim()))];
+    const traducoes = new Map();
+
+    try {
+        for (let inicio = 0; inicio < textosUnicos.length; inicio += 50) {
+            const lote = textosUnicos.slice(inicio, inicio + 50);
+            const resultado = await traduzirLoteDeepL(lote, chave);
+            lote.forEach((texto, indice) => traducoes.set(texto, resultado[indice]));
+        }
+    } catch (error) {
+        throw new Error(`Tradução para pt-BR não concluída; o HTML não será gerado. ${error.message}`);
+    }
+
+    campos.forEach(([item, campo]) => {
+        const traducao = traducoes.get(item[campo].trim());
+        if (!traducao) throw new Error(`Faltou tradução para o campo ${campo}; o HTML não será gerado.`);
+        item[campo] = traducao;
+    });
+    console.log(`🌐 ${textosUnicos.length} descrições e bios traduzidas para pt-BR.`);
+    return true;
+}
+
+const categoriasPtBr = {
+    'IA/Machine Learning': 'IA e aprendizado de máquina',
+    'Web Development': 'Desenvolvimento web',
+    'Mobile': 'Desenvolvimento mobile',
+    'DevOps/Cloud': 'DevOps e nuvem',
+    'Segurança': 'Segurança',
+    'Blockchain/Crypto': 'Blockchain e criptoativos',
+    'Jogos': 'Jogos',
+    'Data Science': 'Ciência de dados',
+    'Ferramentas/Utilitários': 'Ferramentas e utilitários',
+    'Programação Geral': 'Programação geral'
+};
+
+function escaparHTML(valor) {
+    return String(valor ?? '').replace(/[&<>"']/g, (caractere) => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;'
+    })[caractere]);
+}
+
+function renderizarCartaoRepositorio(repo) {
+    const categoria = categoriasPtBr[detectarCategoria(repo.nomeCompleto, repo.descricao, repo.linguagem)] || 'Programação geral';
+    return `
+            <div class="repo-item">
+                <div class="repo-header">
+                    <img src="https://cdn-icons-png.flaticon.com/128/685/685388.png" alt="Repositório" style="width: 20px; height: 20px; opacity: 0.8;">
+                    <a href="${escaparHTML(repo.url)}" target="_blank" rel="noopener noreferrer" class="repo-name">${escaparHTML(repo.nomeCompleto)}</a>
+                    <span class="category-badge">${escaparHTML(categoria)}</span>
+                </div>
+                <div class="repo-description">${escaparHTML(repo.descricao)}</div>
+                <div class="repo-bottom">
+                    <span class="repo-stars"><strong><img src="https://cdn-icons-png.flaticon.com/128/1828/1828884.png" alt="Estrela" style="width: 14px; height: 14px; vertical-align: middle;"> <span class="repo-star-count">${escaparHTML(repo.stars)}</span></strong> estrelas</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/2874/2874791.png" alt="Forks" style="width: 14px; height: 14px; vertical-align: middle;"> ${escaparHTML(repo.forks)} forks</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/1005/1005141.png" alt="Linguagem" style="width: 14px; height: 14px; vertical-align: middle;"> ${escaparHTML(repo.linguagem)}</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/747/747310.png" alt="Data de criação" style="width: 14px; height: 14px; vertical-align: middle;"> ${escaparHTML(repo.criadoEm)}</span>
+                </div>
+            </div>`;
+}
+
+function renderizarLogoRadar() {
+    return `<h1 class="brand-heading" aria-label="Radar Open Source">
+                <svg class="brand-logo" viewBox="0 0 650 150" aria-hidden="true" focusable="false">
+                    <g class="brand-logo-mark">
+                        <path d="M 25.567 103.289 A 58 58 0 1 1 114.433 103.289" />
+                        <path d="M 39.358 91.712 A 40 40 0 1 1 100.642 91.712" />
+                        <path d="M 50.849 82.069 A 25 25 0 1 1 89.151 82.069" />
+                        <path class="brand-logo-diamond" d="M 70 56 L 80 66 L 70 76 L 60 66 Z" />
+                    </g>
+                    <text class="brand-logo-title" x="165" y="88">RADAR</text>
+                    <text class="brand-logo-subtitle" x="170" y="128">OPEN SOURCE</text>
+                </svg>
+            </h1>`;
+}
+
 function gerarHTML(reposTrending, reposBrasileiros, reposEmAltaBrasil, devsBrasileiros) {
+    const dataAtualizacao = new Date().toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' });
     // Calcular data de 14 dias atrás para as URLs
     const dataLimite = new Date();
     dataLimite.setDate(dataLimite.getDate() - 14);
@@ -351,73 +487,20 @@ function gerarHTML(reposTrending, reposBrasileiros, reposEmAltaBrasil, devsBrasi
     const emAltaBrasilUrl = `https://github.com/search?q=topic%3Abrasil+created%3A%3E${dataFormatada}&type=repositories&s=stars&o=desc`;
     const devsBrasilUrl = 'https://github.com/search?q=location%3ABrazil&type=users&s=followers&o=desc';
 
-    const trendingItems = reposTrending.map((repo, index) => {
-        const categoria = detectarCategoria(repo.nomeCompleto, repo.descricao, repo.linguagem);
-        return `
-            <div class="repo-item">
-                <div class="repo-header">
-                    <img src="https://cdn-icons-png.flaticon.com/128/685/685388.png " alt="Repository" style="width: 20px; height: 20px; opacity: 0.8;">
-                    <a href="${repo.url}" target="_blank" class="repo-name">${repo.nomeCompleto}</a>
-                    <span class="category-badge">${categoria}</span>
-                </div>
-                <div class="repo-description">${repo.descricao}</div>
-                <div class="repo-bottom">
-                    <span class="repo-stars"><strong><img src="https://cdn-icons-png.flaticon.com/128/1828/1828884.png" alt="Star" style="width: 14px; height: 14px; vertical-align: middle;"> ${repo.stars}</strong> stars</span>
-                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/2874/2874791.png" alt="Fork" style="width: 14px; height: 14px; vertical-align: middle;"> ${repo.forks} forks</span>
-                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/1005/1005141.png" alt="Code" style="width: 14px; height: 14px; vertical-align: middle;"> ${repo.linguagem}</span>
-                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/747/747310.png" alt="Calendar" style="width: 14px; height: 14px; vertical-align: middle;"> ${repo.criadoEm}</span>
-                </div>
-            </div>`;
-    }).join('');
+    const trendingItems = reposTrending.map(renderizarCartaoRepositorio).join('');
+    const brasileirosItems = reposBrasileiros.map(renderizarCartaoRepositorio).join('');
+    const emAltaBrasilItems = reposEmAltaBrasil.map(renderizarCartaoRepositorio).join('');
 
-    const brasileirosItems = reposBrasileiros.map((repo, index) => {
-        const categoria = detectarCategoria(repo.nomeCompleto, repo.descricao, repo.linguagem);
-        return `
+    const desenvolvedoresItems = devsBrasileiros.map((dev) => `
             <div class="repo-item">
                 <div class="repo-header">
-                    <img src="https://cdn-icons-png.flaticon.com/128/685/685388.png " alt="Repository" style="width: 20px; height: 20px; opacity: 0.8;">
-                    <a href="${repo.url}" target="_blank" class="repo-name">${repo.nomeCompleto}</a>
-                    <span class="category-badge">${categoria}</span>
+                    <img src="${escaparHTML(dev.avatar)}" alt="Perfil de ${escaparHTML(dev.login)}" style="width: 40px; height: 40px; border-radius: 50%; margin-right: 10px;">
+                    <a href="${escaparHTML(dev.url)}" target="_blank" rel="noopener noreferrer" class="repo-name">${escaparHTML(dev.login)}</a>
                 </div>
-                <div class="repo-description">${repo.descricao}</div>
+                <div class="repo-description">${escaparHTML(dev.bio)}</div>
                 <div class="repo-bottom">
-                    <span class="repo-stars"><strong><img src="https://cdn-icons-png.flaticon.com/128/1828/1828884.png" alt="Star" style="width: 14px; height: 14px; vertical-align: middle;"> ${repo.stars}</strong> stars</span>
-                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/2874/2874791.png" alt="Fork" style="width: 14px; height: 14px; vertical-align: middle;"> ${repo.forks} forks</span>
-                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/1005/1005141.png" alt="Code" style="width: 14px; height: 14px; vertical-align: middle;"> ${repo.linguagem}</span>
-                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/747/747310.png" alt="Calendar" style="width: 14px; height: 14px; vertical-align: middle;"> ${repo.criadoEm}</span>
-                </div>
-            </div>`;
-    }).join('');
-
-    const emAltaBrasilItems = reposEmAltaBrasil.map((repo, index) => {
-        const categoria = detectarCategoria(repo.nomeCompleto, repo.descricao, repo.linguagem);
-        return `
-            <div class="repo-item">
-                <div class="repo-header">
-                    <img src="https://cdn-icons-png.flaticon.com/128/685/685388.png " alt="Repository" style="width: 20px; height: 20px; opacity: 0.8;">
-                    <a href="${repo.url}" target="_blank" class="repo-name">${repo.nomeCompleto}</a>
-                    <span class="category-badge">${categoria}</span>
-                </div>
-                <div class="repo-description">${repo.descricao}</div>
-                <div class="repo-bottom">
-                    <span class="repo-stars"><strong><img src="https://cdn-icons-png.flaticon.com/128/1828/1828884.png" alt="Star" style="width: 14px; height: 14px; vertical-align: middle;"> ${repo.stars}</strong> stars</span>
-                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/2874/2874791.png" alt="Fork" style="width: 14px; height: 14px; vertical-align: middle;"> ${repo.forks} forks</span>
-                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/1005/1005141.png" alt="Code" style="width: 14px; height: 14px; vertical-align: middle;"> ${repo.linguagem}</span>
-                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/747/747310.png" alt="Calendar" style="width: 14px; height: 14px; vertical-align: middle;"> ${repo.criadoEm}</span>
-                </div>
-            </div>`;
-    }).join('');
-
-    const desenvolvedoresItems = devsBrasileiros.map((dev, index) => `
-            <div class="repo-item">
-                <div class="repo-header">
-                    <img src="${dev.avatar}" alt="${dev.login}" style="width: 40px; height: 40px; border-radius: 50%; margin-right: 10px;">
-                    <a href="${dev.url}" target="_blank" class="repo-name">${dev.login}</a>
-                </div>
-                <div class="repo-description">${dev.bio}</div>
-                <div class="repo-bottom">
-                    <span class="repo-stars"><strong><img src="https://cdn-icons-png.flaticon.com/128/681/681494.png" alt="Followers" style="width: 14px; height: 14px; vertical-align: middle;"> ${dev.seguidores}</strong> seguidores</span>
-                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/1077/1077114.png" alt="User" style="width: 14px; height: 14px; vertical-align: middle;"> ${dev.tipo}</span>
+                    <span class="repo-stars"><strong><img src="https://cdn-icons-png.flaticon.com/128/681/681494.png" alt="Seguidores" style="width: 14px; height: 14px; vertical-align: middle;"> ${escaparHTML(dev.seguidores)}</strong> seguidores</span>
+                    <span style="color: var(--text-secondary);"><img src="https://cdn-icons-png.flaticon.com/128/1077/1077114.png" alt="Tipo de perfil" style="width: 14px; height: 14px; vertical-align: middle;"> ${escaparHTML(dev.tipo)}</span>
                 </div>
             </div>`).join('');
 
@@ -426,19 +509,19 @@ function gerarHTML(reposTrending, reposBrasileiros, reposEmAltaBrasil, devsBrasi
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Estatísticas de Repositórios - GitHub</title>
+    <title>Radar Open Source | GitHub em pauta</title>
     
     <!-- SEO Meta Tags -->
-    <meta name="description" content="Dashboard interativo com estatísticas semanais do GitHub: repositórios em alta globalmente e no Brasil, desenvolvedores brasileiros mais influentes, análise de categorias e linguagens de programação.">
-    <meta name="keywords" content="GitHub, estatísticas, repositórios, desenvolvedores brasileiros, trending, programação, open source, Brasil, análise de dados, linguagens de programação">
+    <meta name="description" content="Radar semanal em pt-BR com projetos open source em destaque no mundo e no Brasil, além de desenvolvedores da comunidade brasileira.">
+    <meta name="keywords" content="GitHub, repositórios em alta, código aberto, projetos open source, programação, Brasil, desenvolvedores brasileiros">
     <meta name="author" content="Luiz Weber">
     <meta name="robots" content="index, follow">
-    <meta name="language" content="Portuguese">
+    <meta name="language" content="Português">
     <meta name="revisit-after" content="7 days">
     
     <!-- Open Graph Meta Tags -->
-    <meta property="og:title" content="Infográfico GitHub - Estatísticas Semanais">
-    <meta property="og:description" content="Descubra os repositórios mais populares do GitHub, desenvolvedores brasileiros em destaque e tendências de programação com dados atualizados semanalmente.">
+    <meta property="og:title" content="Radar Open Source | GitHub em pauta">
+    <meta property="og:description" content="Descubra projetos open source em destaque e conheça as tendências da comunidade GitHub, com conteúdo em português do Brasil.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://www.weber.eti.br">
     <meta property="og:image" content="https://cdn-icons-png.flaticon.com/512/733/733553.png">
@@ -446,162 +529,111 @@ function gerarHTML(reposTrending, reposBrasileiros, reposEmAltaBrasil, devsBrasi
     
     <!-- Twitter Card Meta Tags -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Infográfico GitHub - Estatísticas Semanais">
-    <meta name="twitter:description" content="Dashboard com dados semanais do GitHub: repos em alta, devs brasileiros e análise de tendências.">
+    <meta name="twitter:title" content="Radar Open Source | GitHub em pauta">
+    <meta name="twitter:description" content="Projetos open source em alta, perfis brasileiros e tendências do GitHub em português do Brasil.">
     <meta name="twitter:image" content="https://cdn-icons-png.flaticon.com/512/733/733553.png">
     
     <!-- Theme Color -->
-    <meta name="theme-color" content="#1e1e1e">
+    <meta name="theme-color" content="#14181c">
     
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Lora:wght@500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css" />
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 </head>
 <body>
     <div class="infographic-container">
         <div class="header">
-            <h1>Infográfico Github</h1>
-            <p>Dashboard com <b>dados semanais</b> extraídos da <b>API</b> do <b>Github</b></p>
+            ${renderizarLogoRadar()}
+            <p>Projetos, ideias e pessoas que estão movimentando o GitHub.</p>
+            <button class="header-hint" type="button" aria-label="Última atualização do projeto: ${dataAtualizacao}, horário de Brasília." data-hint="Última atualização do projeto: ${dataAtualizacao}, horário de Brasília.">
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg>
+            </button>
             <button class="theme-toggle" onclick="toggleTheme()" aria-label="Alternar tema">
-                <img id="theme-icon" src="https://cdn-icons-png.flaticon.com/128/3688/3688612.png" alt="Theme">
+                <img id="theme-icon" src="https://cdn-icons-png.flaticon.com/128/3688/3688612.png" alt="Tema">
             </button>
         </div>
 
-        <div class="update-info">
-            <img src="https://cdn-icons-png.flaticon.com/128/2838/2838779.png" alt="Clock" style="width: 16px; height: 16px; vertical-align: middle; margin-right: 6px;">
-            Última atualização: <em>${new Date().toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' })} (horário de Brasília)</em>.
+        <div class="tabs" role="tablist" aria-label="Abas do Radar">
+            <button class="tab active" id="tab-trending" type="button" role="tab" aria-selected="true" aria-controls="trending" tabindex="0" onclick="trendingTab(this)" onkeydown="tabKeydown(event, this)">Em alta global</button>
+            <button class="tab" id="tab-emaltabrasil" type="button" role="tab" aria-selected="false" aria-controls="emaltabrasil" tabindex="-1" onclick="emAltaBrasilTab(this)" onkeydown="tabKeydown(event, this)">Em alta no Brasil</button>
+            <button class="tab" id="tab-brasil" type="button" role="tab" aria-selected="false" aria-controls="brasil" tabindex="-1" onclick="brTab(this)" onkeydown="tabKeydown(event, this)">Repositórios brasileiros</button>
+            <button class="tab" id="tab-devs" type="button" role="tab" aria-selected="false" aria-controls="devs" tabindex="-1" onclick="devsTab(this)" onkeydown="tabKeydown(event, this)">Comunidade brasileira</button>
         </div>
 
-        <div class="tabs">
-            <button class="tab active" onClick="trendingTab()">
-                <img src="https://cdn-icons-png.flaticon.com/128/4721/4721571.png" alt="Trending" style="width: 16px; height: 16px; vertical-align: middle; margin-right: 4px;">
-                Em alta global
-            </button>
-            <button class="tab" onClick="emAltaBrasilTab()">
-                <img src="https://cdn-icons-png.flaticon.com/128/4721/4721635.png" alt="Trending" style="width: 16px; height: 16px; vertical-align: middle; margin-right: 4px;">
-                Em alta no BR
-            </button>
-            <button class="tab" onClick="brTab()">
-                <img src="https://cdn-icons-png.flaticon.com/128/197/197386.png" alt="Top repositórios Brasil" style="width: 16px; height: 16px; vertical-align: middle; margin-right: 4px;">
-                Repos brazucas
-            </button>
-            <button class="tab" onClick="devsTab()">
-                <img src="https://cdn-icons-png.flaticon.com/128/681/681494.png" alt="Top Devs Brasil" style="width: 16px; height: 16px; vertical-align: middle; margin-right: 4px;">
-                Ranking Usuários BR
-            </button>
-            <button class="tab" onClick="statsTab()">
-                <img src="https://cdn-icons-png.flaticon.com/128/3426/3426653.png" alt="Stats" style="width: 16px; height: 16px; vertical-align: middle; margin-right: 4px;">
-                Estatísticas para nerds
-            </button>
-        </div>
-
-        <div id="trending" class="tab-content active">
+        <div id="trending" class="tab-content active" role="tabpanel" aria-labelledby="tab-trending" aria-hidden="false" tabindex="0">
             <h3 style="display: flex; align-items: center; justify-content: space-between;">
                 <span>
-                    <img src="https://cdn-icons-png.flaticon.com/128/4721/4721571.png" alt="Trending" style="width: 16px; height: 16px; vertical-align: middle; margin-right: 4px;">
+                    <img src="https://cdn-icons-png.flaticon.com/128/4721/4721571.png" alt="Em alta" style="width: 16px; height: 16px; vertical-align: middle; margin-right: 4px;">
                     Repositórios em alta no mundo
                 </span>
+                <span class="trending-actions">
+                    <button class="slideshow-trigger" type="button" data-share-list="trending">Compartilhar carrossel</button>
                 <a href="${trendingUrl}" target="_blank" title="Ver busca no GitHub" class="link-externo">
                     <img src="https://cdn-icons-png.flaticon.com/128/7268/7268615.png" alt="Link externo" class="img-link-externo">
                 </a>
+                </span>
             </h3>
             <div class="repo-list">
 ${trendingItems}
             </div>
         </div>
 
-        <div id="emaltabrasil" class="tab-content">
+        <div id="emaltabrasil" class="tab-content" role="tabpanel" aria-labelledby="tab-emaltabrasil" aria-hidden="true" tabindex="0">
             <h3 style="display: flex; align-items: center; justify-content: space-between;">
                 <span>
-                    <img src="https://cdn-icons-png.flaticon.com/128/4721/4721635.png" alt="Em alta repos BR" style="width: 16px; height: 16px; vertical-align: middle; margin-right: 4px;">
+                    <img src="https://cdn-icons-png.flaticon.com/128/4721/4721635.png" alt="Em alta no Brasil" style="width: 16px; height: 16px; vertical-align: middle; margin-right: 4px;">
                     Repositórios em alta no Brasil
                 </span>
+                <span class="section-actions">
+                    <button class="slideshow-trigger" type="button" data-share-list="emaltabrasil">Compartilhar carrossel</button>
                 <a href="${emAltaBrasilUrl}" target="_blank" title="Ver busca no GitHub" class="link-externo">
                     <img src="https://cdn-icons-png.flaticon.com/128/7268/7268615.png" alt="Link externo" class="img-link-externo">
                 </a>
+                </span>
             </h3>
             <div class="repo-list">
 ${emAltaBrasilItems}
             </div>
         </div>
 
-        <div id="brasil" class="tab-content">
+        <div id="brasil" class="tab-content" role="tabpanel" aria-labelledby="tab-brasil" aria-hidden="true" tabindex="0">
             <h3 style="display: flex; align-items: center; justify-content: space-between;">
                 <span>
-                    <img src="https://cdn-icons-png.flaticon.com/128/197/197386.png" alt="Brazil" style="width: 24px; height: 24px; vertical-align: middle; margin-right: 8px;">
+                    <img src="https://cdn-icons-png.flaticon.com/128/197/197386.png" alt="Brasil" style="width: 24px; height: 24px; vertical-align: middle; margin-right: 8px;">
                     Repositórios brasileiros com mais estrelas
                 </span>
+                <span class="section-actions">
+                    <button class="slideshow-trigger" type="button" data-share-list="brasil">Compartilhar carrossel</button>
                 <a href="${brasilUrl}" target="_blank" title="Ver busca no GitHub" class="link-externo">
                     <img src="https://cdn-icons-png.flaticon.com/128/7268/7268615.png" alt="Link externo" class="img-link-externo">
                 </a>
+                </span>
             </h3>
             <div class="repo-list">
 ${brasileirosItems}
             </div>
         </div>
 
-        <div id="devs" class="tab-content">
+        <div id="devs" class="tab-content" role="tabpanel" aria-labelledby="tab-devs" aria-hidden="true" tabindex="0">
             <h3 style="display: flex; align-items: center; justify-content: space-between;">
                 <span>
-                    <img src="https://cdn-icons-png.flaticon.com/128/681/681494.png" alt="Users" style="width: 24px; height: 24px; vertical-align: middle; margin-right: 8px;">
+                    <img src="https://cdn-icons-png.flaticon.com/128/681/681494.png" alt="Comunidade" style="width: 24px; height: 24px; vertical-align: middle; margin-right: 8px;">
                     Perfis brasileiros com mais seguidores
                 </span>
+                <span class="section-actions">
+                    <button class="slideshow-trigger" type="button" data-share-list="devs">Compartilhar carrossel</button>
                 <a href="${devsBrasilUrl}" target="_blank" title="Ver busca no GitHub" class="link-externo">
                     <img src="https://cdn-icons-png.flaticon.com/128/7268/7268615.png" alt="Link externo" class="img-link-externo">
                 </a>
+                </span>
             </h3>
             <div class="repo-list">
 ${desenvolvedoresItems}
             </div>
         </div>
-        <div id="stats" class="tab-content">
-            <h3>
-                <img src="https://cdn-icons-png.flaticon.com/128/3426/3426653.png" alt="Statistics" style="width: 24px; height: 24px; vertical-align: middle; margin-right: 8px;">
-                Estatísticas dos Repositórios em Alta
-            </h3>
-            <div class="stats-list">
-                <div class="stats-item">
-                    <h4>
-                        <img src="https://cdn-icons-png.flaticon.com/128/7268/7268667.png" alt="Globe" style="width: 20px; height: 20px; vertical-align: middle; margin-right: 8px;">
-                        Repositórios por País
-                    </h4>
-                    <div class="stats-container">
-                        <canvas id="reposByCountryChart"></canvas>
-                    </div>
-                </div>
-                
-                <div class="stats-item">
-                    <h4>
-                        <img src="https://cdn-icons-png.flaticon.com/128/681/681494.png" alt="Developers" style="width: 20px; height: 20px; vertical-align: middle; margin-right: 8px;">
-                        Desenvolvedores por País
-                    </h4>
-                    <div class="stats-container">
-                        <canvas id="devsByCountryChart"></canvas>
-                    </div>
-                </div>
-                
-                <div class="stats-item">
-                    <h4>
-                        <img src="https://cdn-icons-png.flaticon.com/128/1998/1998087.png" alt="Categories" style="width: 20px; height: 20px; vertical-align: middle; margin-right: 8px;">
-                        Repositórios por Categoria
-                    </h4>
-                    <div class="stats-container">
-                        <canvas id="reposByCategoryChart"></canvas>
-                    </div>
-                </div>
-                
-                <div class="stats-item">
-                    <h4>
-                        <img src="https://cdn-icons-png.flaticon.com/128/1005/1005141.png" alt="Languages" style="width: 20px; height: 20px; vertical-align: middle; margin-right: 8px;">
-                        Repositórios por Linguagem de Programação
-                    </h4>
-                    <div class="stats-container">
-                        <canvas id="reposByLanguageChart"></canvas>
-                    </div>
-                </div>
-            </div>
-        </div>
         <div class="footer">
-            Dados fornecidos por <a href="https://docs.github.com/en/rest" target="_blank">GitHub API</a>. Desenvolvido por <a href="https://www.weber.eti.br" target="_blank">Luiz Weber</a>.
+            Dados fornecidos pela <a href="https://docs.github.com/en/rest" target="_blank">API do GitHub</a>. Desenvolvido por <a href="https://www.weber.eti.br" target="_blank">Luiz Weber</a>.
         </div>
     </div>
 
@@ -634,11 +666,9 @@ ${desenvolvedoresItems}
         
         // Inicializar tema ao carregar página
         document.addEventListener('DOMContentLoaded', function() {
-            const savedTheme = localStorage.getItem('theme') || 'dark';
-            if (savedTheme === 'light') {
-                document.documentElement.setAttribute('data-theme', 'light');
-                document.getElementById('theme-icon').src = LIGHT_URL_ICON;
-            }
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            document.getElementById('theme-icon').src = savedTheme === 'light' ? LIGHT_URL_ICON : DARK_URL_ICON;
             
             // Aplicar cores aos badges
             applyCategoryColors();
@@ -659,20 +689,20 @@ ${desenvolvedoresItems}
             }
         }
 
-        function trendingTab() {
-            switchTab('trending');
+        function trendingTab(tab) {
+            switchTab('trending', tab);
         }
 
-        function emAltaBrasilTab() {
-            switchTab('emaltabrasil');
+        function emAltaBrasilTab(tab) {
+            switchTab('emaltabrasil', tab);
         }
 
-        function brTab() {
-            switchTab('brasil');
+        function brTab(tab) {
+            switchTab('brasil', tab);
         }
 
-        function devsTab() {
-            switchTab('devs');
+        function devsTab(tab) {
+            switchTab('devs', tab);
         }
 
         function statsTab() {
@@ -684,14 +714,36 @@ ${desenvolvedoresItems}
             }
         }
 
-        function switchTab(tabName) {
-            // Remove active class from all tabs and contents
-            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
-            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-            
-            // Add active class to clicked tab and corresponding content
-            event.target.closest('.tab').classList.add('active');
-            document.getElementById(tabName).classList.add('active');
+        function switchTab(tabName, selectedTab) {
+            const tab = selectedTab || document.querySelector('.tabs [aria-controls="' + tabName + '"]');
+            document.querySelectorAll('.tabs .tab').forEach(item => {
+                const selected = item === tab;
+                item.classList.toggle('active', selected);
+                item.setAttribute('aria-selected', String(selected));
+                item.tabIndex = selected ? 0 : -1;
+            });
+            document.querySelectorAll('.tab-content').forEach(panel => {
+                const selected = panel.id === tabName;
+                panel.classList.toggle('active', selected);
+                panel.setAttribute('aria-hidden', String(!selected));
+            });
+        }
+
+        function tabKeydown(event, currentTab) {
+            const tabs = Array.from(document.querySelectorAll('.tabs .tab'));
+            const currentIndex = tabs.indexOf(currentTab);
+            let targetIndex = currentIndex;
+            if (event.key === 'ArrowRight') targetIndex = (currentIndex + 1) % tabs.length;
+            else if (event.key === 'ArrowLeft') targetIndex = (currentIndex - 1 + tabs.length) % tabs.length;
+            else if (event.key === 'Home') targetIndex = 0;
+            else if (event.key === 'End') targetIndex = tabs.length - 1;
+            else return;
+
+            event.preventDefault();
+            const targetTab = tabs[targetIndex];
+            const panelId = targetTab.getAttribute('aria-controls');
+            switchTab(panelId, targetTab);
+            targetTab.focus();
         }
 
         // Função para detectar país baseado no nome do autor/repositório
@@ -997,6 +1049,9 @@ ${desenvolvedoresItems}
             });
         }
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+    <script src="slideshow.js"></script>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-XG24FJMJPP"></script>
     <script>
@@ -1012,6 +1067,10 @@ ${desenvolvedoresItems}
 
 async function main() {
     try {
+        if (!process.env.DEEPL_AUTH_KEY) {
+            throw new Error('Configure DEEPL_AUTH_KEY antes de gerar o HTML; descrições e bios precisam ser traduzidas para pt-BR.');
+        }
+
         console.log('🔍 Buscando repositórios no GitHub...\n');
 
         // Buscar repositórios trending
@@ -1036,6 +1095,8 @@ async function main() {
         console.log('👥 Buscando desenvolvedores brasileiros mais seguidos...');
         const devsBrasileiros = await buscarDesenvolvedoresBrasileiros();
         console.log(`✅ Encontrados ${devsBrasileiros.length} desenvolvedores brasileiros\n`);
+
+        await traduzirConteudosPtBr(reposTrending, reposBrasileiros, reposEmAltaBrasil, devsBrasileiros);
 
         // Exibir trending no console
         console.log('=== REPOSITÓRIOS EM ALTA ===\n');
@@ -1083,6 +1144,7 @@ async function main() {
 
     } catch (error) {
         console.error('❌ Erro:', error.message);
+        process.exitCode = 1;
     }
 }
 

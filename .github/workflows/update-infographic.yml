@@ -31,6 +31,8 @@ jobs:
           
       - name: Executar script
         run: node script.js
+        env:
+          DEEPL_AUTH_KEY: ${{ secrets.DEEPL_AUTH_KEY }}
         
       - name: Criar index.html
         run: cp infografico_github_dinamico.html index.html

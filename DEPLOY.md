@@ -33,6 +33,16 @@ git push -u origin main
 2. Em "Source", selecione **GitHub Actions**
 3. Salve as alterações
 
+### Tradução automática para pt-BR
+
+As descrições dos repositórios e as bios dos perfis são traduzidas pelo DeepL API Free antes de gerar o HTML. A chave é obrigatória para executar o gerador e o workflow semanal:
+
+1. Obtenha uma chave do DeepL API Free.
+2. No repositório, abra **Settings** → **Secrets and variables** → **Actions**.
+3. Crie um secret chamado `DEEPL_AUTH_KEY` com a chave como valor.
+
+Sem esse secret, o gerador falha antes de consultar as APIs ou modificar o HTML. Se uma tradução falhar ou vier incompleta, a geração também é interrompida em vez de manter o texto original. O script não registra a chave nos logs.
+
 ### 4. Executar o Workflow
 
 Agora execute o workflow pela primeira vez:
